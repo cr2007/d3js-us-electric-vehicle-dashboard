@@ -7,5 +7,11 @@ To do list:
  - [ ] That same group member invites others to collaborate.
  - [ ] Each group member sets up their access to GitLab: SSH keygen; clone repo; configuration git user.email
 
-Remember to keep this README file updated as you develop your interactive data visualisation dashboard.
+Git configuration:
 
+```bash
+git config user.name "<name>"
+git config user.email "<email>"
+```
+
+Remember to keep this README file updated as you develop your interactive data visualisation dashboard.
