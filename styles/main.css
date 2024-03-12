@@ -6,3 +6,10 @@
 h1 {
     text-align: center;
 }
+
+@media (prefers-color-scheme: dark) {
+    * {
+        background-color: #121212;
+        color: #fafafa;
+    }
+}
