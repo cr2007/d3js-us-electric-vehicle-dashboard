@@ -1,0 +1,28 @@
+{
+    "recommendations": [
+        "formulahendry.auto-rename-tag",
+        "aaron-bond.better-comments",
+        "ambar.bundle-size",
+        "ajithgopi.css-snippets",
+        "pranaygp.vscode-css-peek",
+        "yoyo.d3snippets",
+        "editorconfig.editorconfig",
+        "dbaeumer.vscode-eslint",
+        "mhutchie.git-graph",
+        "github.copilot",
+        "eamodio.gitlens",
+        "ecmel.vscode-html-css",
+        "visualstudioexptteam.vscodeintellicode",
+        "zignd.html-css-class-completion",
+        "xabikos.javascriptsnippets",
+        "ritwickdey.liveserver",
+        "ms-vsliveshare.vsliveshare",
+        "shd101wyy.markdown-preview-enhanced",
+        "bierner.markdown-checkbox",
+        "bierner.markdown-emoji",
+        "bierner.markdown-footnotes",
+        "esbenp.prettier-vscode",
+        "meganrogge.template-string-converter",
+        "vscode-icons-team.vscode-icons"
+    ]
+}
