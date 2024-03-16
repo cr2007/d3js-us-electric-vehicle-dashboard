@@ -58,24 +58,51 @@ h1 {
   align-items: center;
 }
 
+#stacked-bar-chart-container {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 500px;
+  height: fit-content;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+}
+
 #pie-chart {
   display: block;
   margin: auto;
 }
 
 .legend {
-  margin-top: 20px;
+  margin-top: 15px;
+  padding-bottom: 15px;
   margin-left: 50px;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.legend-item2 {
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
   margin-bottom: 10px;
 }
 
 .legend-dot {
   margin-right: 10px;
+}
+
+.legend-text {
+  font-size: 12px;
+}
+
+.legend-text2 {
+  font-size: 12px;
 }
 
 .headings {
