@@ -68,13 +68,23 @@ h1 {
   align-items: center;
 }
 
+#line-chart-container {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 600px;
+  height: fit-content;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+}
+
 #pie-chart {
   display: block;
   margin: auto;
 }
 
 .legend {
-  margin-top: 15px;
+  padding-top: 15px;
   padding-bottom: 15px;
   margin-left: 50px;
 }
@@ -103,6 +113,7 @@ h1 {
 
 .legend-text2 {
   font-size: 12px;
+  margin-right: 10px;
 }
 
 .headings {
@@ -120,6 +131,34 @@ h1 {
   margin-top: 0;
   color: rgba(0, 0, 0, 0.6);
 }
+
+.legend-row {
+  display: flex;
+  justify-content: start; /* Or center, depending on how you want them aligned */
+  margin-bottom: 5px; /* Spacing between rows */
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; /* Spacing between items */
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 16px;
+  height: 25px;
+  border-radius: 20%;
+  margin-right: 5px; /* Spacing between dot and text */
+}
+
+.legend-text {
+  /* Your styling for the text */
+
+  font-size: 11px;
+}
+
+
 
 @media (prefers-color-scheme: dark) {
   * {
