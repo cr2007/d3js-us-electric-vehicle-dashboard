@@ -1,15 +1,175 @@
-*{
-    color: #222;
-    font-family: sans-serif;
+* {
+  color: #222;
+  font-family: sans-serif;
 }
 
 h1 {
-    text-align: center;
+  text-align: left;
 }
 
+.dashboard {
+  position: relative;
+}
+
+.search-box {
+  display: flex;
+  justify-content: space-between;
+  width: 500px;
+  padding-left: 10px;
+}
+
+.dashboard .search-box .search {
+  position: relative;
+  height: 50px;
+  width: 100%;
+}
+
+.search-box .search input {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  border: 1px solid #0000005a;
+  border-radius: 5px;
+  background-color: #e8eaed;
+  padding: 0 100px 0 15px;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 70px;
+}
+
+#bar-chart-container {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+}
+
+#pie-chart-container {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 400px;
+  height: fit-content;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+#stacked-bar-chart-container {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 500px;
+  height: fit-content;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+#line-chart-container {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 600px;
+  height: fit-content;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+#pie-chart {
+  display: block;
+  margin: auto;
+}
+
+.legend {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-left: 50px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.legend-item2 {
+  display: flex;
+  align-items: center;
+  margin-right: 50px;
+  margin-bottom: 10px;
+}
+
+.legend-dot {
+  margin-right: 10px;
+}
+
+.legend-text {
+  font-size: 12px;
+}
+
+.legend-text2 {
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.headings {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  text-align: left;
+}
+
+.headings h3 {
+  margin-bottom: 5px;
+}
+
+.headings p {
+  margin-top: 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.legend-row {
+  display: flex;
+  justify-content: start; /* Or center, depending on how you want them aligned */
+  margin-bottom: 5px; /* Spacing between rows */
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; /* Spacing between items */
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 16px;
+  height: 25px;
+  border-radius: 20%;
+  margin-right: 5px; /* Spacing between dot and text */
+}
+
+.legend-text {
+  /* Your styling for the text */
+
+  font-size: 11px;
+}
+
+
+
 @media (prefers-color-scheme: dark) {
-    * {
-        background-color: #121212;
-        color: #fafafa;
-    }
+  * {
+    background-color: #121212;
+    color: #fafafa;
+  }
+}
+
+@media (prefers-color-scheme) {
+  * {
+    background-color: #fafafa;
+    color: #000000;
+  }
 }
