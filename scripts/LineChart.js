@@ -19,7 +19,7 @@ export default class LineChart {
 
     const yScale = d3.scaleLinear()
       .range([height, 0])
-      .domain([0, d3.max(data, d => d3.max(d.values, v => v.count))]);
+      .domain([-50, d3.max(data, d => d3.max(d.values, v => v.count))]);
 
     const colorMapping = {
       'TESLA': '#e41a1c',
