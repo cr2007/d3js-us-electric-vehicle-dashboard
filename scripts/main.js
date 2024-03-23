@@ -69,7 +69,7 @@ const handleSearch = (event) => {
 };
 
 const processDataForStackedBarChart = (data) => {
-  
+
   // Assuming 'data' is your dataset after loading the CSV
  const rolledUpData = d3.rollups(
    data,
@@ -77,7 +77,7 @@ const processDataForStackedBarChart = (data) => {
    d => d['Model Year'], // First level of rollup: group by 'Model Year'
    d => d['Electric Vehicle Type'] // Second level of rollup: group by 'Electric Vehicle Type'
  );
- 
+
  // To structure the data for a stacked bar chart, we'll map it into an array of objects
  const structuredData = rolledUpData.map(([year, types]) => {
    const entriesForYear = { year };
@@ -92,14 +92,14 @@ const processDataForStackedBarChart = (data) => {
   console.log("structured bar chart data",structuredData);
 
   return structuredData;
- 
+
  };
 
 
 const processDataForLineChart = (data) => {
   // Get unique makes
   const makes = Array.from(new Set(data.map(d => d.Make)));
-  
+
   // Get unique years
   const years = Array.from(new Set(data.map(d => d['Model Year']))).sort(d3.ascending);
 

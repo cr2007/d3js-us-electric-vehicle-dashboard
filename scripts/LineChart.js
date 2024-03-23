@@ -2,13 +2,13 @@ export default class LineChart {
     constructor(svgSelector) {
       this.svgSelector = svgSelector;
     }
-  
+
     renderLineChart(data) {
-  
+
       const margin = { top: 20, right: 30, bottom: 50, left: 60 };
       const width = 600 - margin.left - margin.right;
       const height = 350 - margin.top - margin.bottom;
-    
+
       const allYears = Array.from(new Set(data.flatMap(d => d.values.map(v => v.year)))).sort();
 
       console.log("allYears:",allYears);
@@ -64,12 +64,12 @@ export default class LineChart {
       svg.select('.grid .domain').remove();
 
 
-      // For the line 
+      // For the line
       const line = d3.line()
       .x(d => xScale(d.year) + xScale.bandwidth() / 2)
       .y(d => yScale(d.count));
 
-      
+
       // Bind data and create one path per make
       data.forEach(makeData => {
           svg.append('path')
@@ -81,7 +81,7 @@ export default class LineChart {
               .attr('d', line);
       });
 
-  
+
       // Add the X Axis with label
       svg.append('g')
         .attr('transform', `translate(0,${height})`)
@@ -92,8 +92,8 @@ export default class LineChart {
         .attr('y', margin.bottom - 10)
         .attr('text-anchor', 'end')
         .attr('font-weight', 'bold');
-        
-  
+
+
       // Add the Y Axis with label
       svg.append('g')
         .call(d3.axisLeft(yScale))
@@ -105,8 +105,8 @@ export default class LineChart {
         .attr('dy', '1em')
         .attr('text-anchor', 'middle')
         .attr('font-weight', 'bold');
-        
-  
+
+
       // Add a tooltip
       const tooltip = d3.select('body').append('div')
         .attr('class', 'tooltip')
@@ -121,7 +121,7 @@ export default class LineChart {
         .style('border', '0px')
         .style('border-radius', '8px')
         .style('pointer-events', 'none');
-  
+
       // Tooltip mouseout event handler
       const mouseout = () => {
         tooltip.transition()
@@ -153,4 +153,3 @@ export default class LineChart {
 
     }
   }
-  
