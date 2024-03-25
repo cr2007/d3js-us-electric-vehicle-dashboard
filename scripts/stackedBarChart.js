@@ -13,8 +13,8 @@ export default class StackedBarChart {
 
     // Dimensions and margins
     const margin = { top: 20, right: 20, bottom: 40, left: 50 };
-    const width = 500 - margin.left - margin.right;
-    const height = 300 - margin.top - margin.bottom;
+    const width = 600 - margin.left - margin.right;
+    const height = 350 - margin.top - margin.bottom;
 
     // Scales
     const xScale = d3

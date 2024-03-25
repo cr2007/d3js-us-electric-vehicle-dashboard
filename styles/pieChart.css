@@ -3,9 +3,6 @@
   grid-area: c2;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  width: 320px;
-  height: fit-content;
-  justify-self: center;
 }
 
 #pie-chart {
@@ -14,16 +11,15 @@
 }
 
 .legend-pie {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
 }
 
 .legend-item-pie {
   display: flex;
   align-items: center;
-  padding: 5px;
-  /* margin-bottom: 10px; */
+  padding-top: 20px;
 }
 
 .legend-dot-pie {
@@ -31,5 +27,5 @@
 }
 
 .legend-text-pie {
-  font-size: 12px;
+  font-size: 16px;
 }

@@ -11,7 +11,6 @@
 #app {
   display: grid;
   height: 100vh;
-  width: 50vh;
   padding-top: 20px;
   grid-template-columns: 20px 1fr;
   grid-template-rows: 1fr 1fr;

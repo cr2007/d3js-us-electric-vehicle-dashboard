@@ -5,8 +5,8 @@ export default class LineChart {
 
   renderLineChart(data) {
     const margin = { top: 20, right: 30, bottom: 50, left: 60 };
-    const width = 500 - margin.left - margin.right;
-    const height = 300 - margin.top - margin.bottom;
+    const width = 600 - margin.left - margin.right;
+    const height = 350 - margin.top - margin.bottom;
 
     const allYears = Array.from(
       new Set(data.flatMap((d) => d.values.map((v) => v.year)))
