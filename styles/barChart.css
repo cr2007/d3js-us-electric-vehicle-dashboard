@@ -1,0 +1,8 @@
+/* c1 */
+#bar-chart-container {
+  grid-area: c1;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  /* width: fit-content; */
+  /* height: fit-content; */
+}

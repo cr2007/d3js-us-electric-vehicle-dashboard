@@ -11,143 +11,173 @@
   </head>
   <body>
     <h1>F20DV Coursework - Group 10</h1>
+    <section class="dashboard">
+      <div class="search-box">
+        <div class="search">
+          <input type="text" placeholder="Search for a Manufacturer" />
+        </div>
+      </div>
+    </section>
 
     <div id="app">
-      <section class="dashboard">
-        <div class="search-box">
-          <div class="search">
-            <input type="text" placeholder="Search for a Manufacturer" />
+      <main class="charts">
+        <!-- c1 -->
+        <div id="bar-chart-container">
+          <div class="headings">
+            <h3>Total Number of Sold Cars</h3>
+            <p>To the nearest 100</p>
           </div>
+          <svg id="bar-chart"></svg>
         </div>
-      </section>
-    </div>
-    <div class="charts">
 
-      <div id="bar-chart-container">
-        <div class="headings">
-          <h3>Total Number of Sold Cars</h3>
-          <p>To the nearest 100</p>
-        </div>
-        <svg id="bar-chart"></svg>
-      </div>
-
-      <div id="pie-chart-container">
-        <div class="headings">
-          <h3>Proportion on Electric Vehicle Types</h3>
-          <p>Overall breakdown</p>
-        </div>
-        <svg id="pie-chart"></svg>
-        <div class="legend">
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #5e3fbe">&#11044;</span>
-            <span class="legend-text"
-              >Plug-In Hybrid Electric Vehicle (PHEV)</span
-            >
+        <!-- c2 -->
+        <div id="pie-chart-container">
+          <div class="headings">
+            <h3>Proportion on Electric Vehicle Types</h3>
+            <p>Overall breakdown</p>
           </div>
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #f4f0fd">&#11044;</span>
-            <span class="legend-text">Battery Electric Vehicle (BEV)</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="charts">
-
-      <div id="stacked-bar-chart-container">
-        <div class="headings">
-          <h3>Number of Electric Vehicle Types Sold By Year</h3>
-          <p>Total count for all manufacturers</p>
-        </div>
-        <svg id="stacked-bar-chart"></svg>
-        <div class="legend">
-          <div class="legend-item2">
-            <div>
-              <span class="legend-dot" style="color: #f5a067">&#11044;</span>
-              <span class="legend-text2">Battery Electric Vehicle (BEV)</span>
+          <svg id="pie-chart"></svg>
+          <div class="legend-pie">
+            <div class="legend-item-pie">
+              <span class="legend-dot-pie" style="color: #5e3fbe"
+                >&#11044;</span
+              >
+              <span class="legend-text-pie"
+                >Plug-In Hybrid Electric Vehicle (PHEV)</span
+              >
             </div>
-            <div class="legend-item2">
-              <span class="legend-dot" style="color: #5E3FBE">&#11044;</span>
-              <span class="legend-text2">Plug-In Hybrid Electric Vehicle (PHEV)</span>
+            <div class="legend-item-pie">
+              <span class="legend-dot-pie" style="color: #f4f0fd"
+                >&#11044;</span
+              >
+              <span class="legend-text-pie"
+                >Battery Electric Vehicle (BEV)</span
+              >
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- const colorMapping = {
-        'TESLA': '#e41a1c',
-        'BMW': '#377eb8',
-        'VOLVO': '#4daf4a',
-        'KIA': '#984ea3',
-        'SUBARU': '#ff7f00',
-        'PORSCHE': '#ffff33',
-        'CHRYSLER': '#a65628',
-        'MINI': '#f781bf',
-        'FISKER': '#999999',
-        'WHEEGO ELECTRIC CARS': '#a6cee3',
-        'CADILLAC': '#1f78b4',
-    }; -->
-
-    <div id="line-chart-container">
-      <div class="headings">
-        <h3>Electric Vehicles Owned Every Year</h3>
-        <p>Categorized by manufacturer</p>
-      </div>
-      <svg id="line-chart"></svg>
-      <div class="legend">
-
-        <div class="legend-row">
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #e41a1c">&#11044;</span>
-            <span class="legend-text">TESLA</span>
+        <!-- c3 -->
+        <div id="stacked-bar-chart-container">
+          <div class="headings">
+            <h3>Number of Electric Vehicle Types Sold By Year</h3>
+            <p>Total count for all manufacturers</p>
           </div>
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #377eb8">&#11044;</span>
-            <span class="legend-text">BMW</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #4daf4a">&#11044;</span>
-            <span class="legend-text">VOLVO</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #984ea3">&#11044;</span>
-            <span class="legend-text">KIA</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #ff7f00">&#11044;</span>
-            <span class="legend-text">SUBARU</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #ffff33">&#11044;</span>
-            <span class="legend-text">PORSCHE</span>
+          <svg id="stacked-bar-chart"></svg>
+          <div class="legend-stackedbar">
+            <div class="legend-item-stackedbar">
+              <div>
+                <span class="legend-dot-stackedbar" style="color: #f5a067"
+                  >&#11044;</span
+                >
+                <span class="legend-text-stackedbar"
+                  >Battery Electric Vehicle (BEV)</span
+                >
+              </div>
+              <div class="legend-item-stackedbar">
+                <span class="legend-dot-stackedbar" style="color: #5e3fbe"
+                  >&#11044;</span
+                >
+                <span class="legend-text-stackedbar"
+                  >Plug-In Hybrid Electric Vehicle (PHEV)</span
+                >
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="legend-row">
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #a65628">&#11044;</span>
-            <span class="legend-text">CHRYSLER</span>
+        <!-- c4 -->
+        <div id="line-chart-container">
+          <div class="headings">
+            <h3>Electric Vehicles Owned Every Year</h3>
+            <p>Categorized by manufacturer</p>
           </div>
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #f781bf">&#11044;</span>
-            <span class="legend-text">MINI</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #999999">&#11044;</span>
-            <span class="legend-text">FISKER</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #1f78b4">&#11044;</span>
-            <span class="legend-text">CADILLAC</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot" style="color: #a6cee3">&#11044;</span>
-            <span class="legend-text">WHEEGO ELECTRIC CARS</span>
+          <svg id="line-chart"></svg>
+          <div class="legend-line">
+            <div class="legend-row-line">
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #e41a1c"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">TESLA</span>
+              </div>
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #377eb8"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">BMW</span>
+              </div>
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #4daf4a"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">VOLVO</span>
+              </div>
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #984ea3"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">KIA</span>
+              </div>
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #ff7f00"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">SUBARU</span>
+              </div>
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #ffff33"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">PORSCHE</span>
+              </div>
+            </div>
+
+            <div class="legend-row-line">
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #a65628"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">CHRYSLER</span>
+              </div>
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #f781bf"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">MINI</span>
+              </div>
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #999999"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">FISKER</span>
+              </div>
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #1f78b4"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">CADILLAC</span>
+              </div>
+              <div class="legend-item-line">
+                <span class="legend-dot-line" style="color: #a6cee3"
+                  >&#11044;</span
+                >
+                <span class="legend-text-line">WHEEGO ELECTRIC CARS</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+
+        <!-- c5 (Change the name to match the rest of the containers) -->
+        <div class="card-5"></div>
+        <!-- c6 (Change the name to match the rest of the containers) -->
+        <div class="card-6"></div>
+        <!-- c7 (Change the name to match the rest of the containers) -->
+        <div class="card-7"></div>
+        <!-- c8 (Change the name to match the rest of the containers) -->
+        <div class="card-8"></div>
+      </main>
     </div>
-
 
     <script type="module" src="scripts/main.js"></script>
   </body>

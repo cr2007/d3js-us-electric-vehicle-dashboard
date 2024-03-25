@@ -1,0 +1,35 @@
+/* c2 */
+#pie-chart-container {
+  grid-area: c2;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 320px;
+  height: fit-content;
+  justify-self: center;
+}
+
+#pie-chart {
+  display: block;
+  margin: auto;
+}
+
+.legend-pie {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-left: 50px;
+}
+
+.legend-item-pie {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  /* margin-bottom: 10px; */
+}
+
+.legend-dot-pie {
+  margin-right: 10px;
+}
+
+.legend-text-pie {
+  font-size: 12px;
+}
