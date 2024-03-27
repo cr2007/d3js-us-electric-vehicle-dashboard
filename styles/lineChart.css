@@ -1,0 +1,30 @@
+/* c4 */
+#line-chart-container {
+  grid-area: c4;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  /* width: 600px; */
+  /* height: fit-content; */
+}
+
+.legend-row-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.legend-item-line {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.legend-text-line {
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.legend-dot-line {
+  margin-right: 5px;
+}

@@ -21,8 +21,8 @@ export default class BarChart {
     }
 
     // Dimensions
-    const width = 800;
-    const height = 250;
+    const width = 1000;
+    const height = 400;
     const margin = { top: 10, right: 10, bottom: 30, left: 45 };
     const chartWidth = width - margin.left - margin.right - 50;
     const chartHeight = height - margin.top - margin.bottom;
@@ -79,7 +79,7 @@ export default class BarChart {
           .style('left', `${event.pageX}px`)
           .style('top', `${event.pageY}px`);
       })
-      .on('mouseout', function () {
+      .on('mouseout', () => {
         tooltip.transition().duration(500).style('opacity', 0);
       })
       .transition()

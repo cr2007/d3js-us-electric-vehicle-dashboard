@@ -1,0 +1,33 @@
+/* c3 */
+#stacked-bar-chart-container {
+  grid-area: c3;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  /* width: fit-content; */
+  /* height: fit-content; */
+}
+
+.legend-row-stackedbar {
+  display: flex;
+  justify-content: start;
+  margin-bottom: 5px;
+}
+
+.legend-item-stackedbar {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.legend-text-stackedbar {
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.legend-dot-stackedbar {
+  display: inline-block;
+  width: 16px;
+  height: 25px;
+  border-radius: 20%;
+  margin-right: 5px;
+}

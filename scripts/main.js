@@ -3,7 +3,7 @@
 import BarChart from './barChart.js';
 import PieChart from './pieChart.js';
 import StackedBarChart from './stackedBarChart.js';
-import LineChart from './LineChart.js';
+import LineChart from './lineChart.js';
 
 console.log(`D3 loaded, version ${d3.version}`);
 
@@ -72,9 +72,9 @@ const processDataForStackedBarChart = (data) => {
   // Assuming 'data' is your dataset after loading the CSV
   const rolledUpData = d3.rollups(
     data,
-    v => v.length, // This is the reducing function, counting the number of entries
-    d => d['Model Year'], // First level of rollup: group by 'Model Year'
-    d => d['Electric Vehicle Type'] // Second level of rollup: group by 'Electric Vehicle Type'
+    (v) => v.length, // This is the reducing function, counting the number of entries
+    (d) => d['Model Year'], // First level of rollup: group by 'Model Year'
+    (d) => d['Electric Vehicle Type'] // Second level of rollup: group by 'Electric Vehicle Type'
   );
 
   // To structure the data for a stacked bar chart, we'll map it into an array of objects
@@ -89,34 +89,35 @@ const processDataForStackedBarChart = (data) => {
 
   structuredData.sort((a, b) => d3.ascending(a.year, b.year));
 
-  console.log("structured bar chart data", structuredData);
+  console.log('structured bar chart data', structuredData);
 
   return structuredData;
-
 };
-
 
 const processDataForLineChart = (data) => {
   // Get unique makes
-  const makes = Array.from(new Set(data.map(d => d.Make)));
+  const makes = Array.from(new Set(data.map((d) => d.Make)));
 
   // Get unique years
-  const years = Array.from(new Set(data.map(d => d['Model Year']))).sort(d3.ascending);
+  const years = Array.from(new Set(data.map((d) => d['Model Year']))).sort(
+    d3.ascending
+  );
 
   // Structure the data for the line chart
-  const structuredData = makes.map(make => {
-    const values = years.map(year => {
-      const count = data.filter(d => d.Make === make && d['Model Year'] === year).length;
+  const structuredData = makes.map((make) => {
+    const values = years.map((year) => {
+      const count = data.filter(
+        (d) => d.Make === make && d['Model Year'] === year
+      ).length;
       return { year, count }; // count for each make in each year
     });
     return { make, values }; // series of counts for each make
   });
 
-  console.log("structuredLineData:", structuredData);
+  console.log('structuredLineData:', structuredData);
 
   return structuredData;
 };
-
 
 // Event listener to search input
 document
@@ -132,5 +133,4 @@ loadData().then((data) => {
   pieChart.renderPieChart(data);
   stackedBarChart.renderStackedBarChart(processedStackedData);
   lineChart.renderLineChart(processedLineData);
-
 });
