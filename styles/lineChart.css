@@ -3,8 +3,6 @@
   grid-area: c4;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  /* width: 600px; */
-  /* height: fit-content; */
 }
 
 .legend-row-line {
@@ -28,3 +26,56 @@
 .legend-dot-line {
   margin-right: 5px;
 }
+
+.chart-dropdown {
+  position: relative;
+}
+
+.dropdown-button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  margin-left: 520px;
+
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-top: none;
+  margin-left: 395px;
+
+}
+
+.dropdown-content label {
+  display: block;
+  padding: 5px 10px;
+  clear: both;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.dropdown-content input[type='checkbox'] {
+  margin-right: 5px;
+}
+
+.dropdown-content label:hover {
+  background-color: #f1f1f1;
+}
+
+.chart-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.chart-dropdown .show {
+  display: block;
+}
+

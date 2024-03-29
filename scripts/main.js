@@ -90,27 +90,25 @@ const processDataForStackedBarChart = (data) => {
 };
 
 const processDataForLineChart = (data) => {
+
   const makes = Array.from(new Set(data.map((d) => d.Make)));
 
-  const years = Array.from(new Set(data.map((d) => d['Model Year']))).sort(
-    d3.ascending
-  );
+  const years = Array.from(new Set(data.map((d) => d['Model Year']))).sort(d3.ascending);
 
-  // Structuring the data for the line chart
   const structuredData = makes.map((make) => {
     const values = years.map((year) => {
       const count = data.filter(
         (d) => d.Make === make && d['Model Year'] === year
       ).length;
-      return { year, count }; // count for each make in each year
+      return { year, count };
     });
-    return { make, values }; // series of counts for each make
+    return { make, values };
   });
-
-  // console.log('structuredLineData:', structuredData);
 
   return structuredData;
 };
+
+
 
 // Event listener to search input
 document
@@ -125,7 +123,26 @@ loadData().then((data) => {
   barChart.renderBarChart(data);
   pieChart.renderPieChart(data);
   stackedBarChart.renderStackedBarChart(processedStackedData);
+
+  lineChart.populateDropdown(data);
   lineChart.renderLineChart(processedLineData);
+
+  document.querySelector('.dropdown-button').addEventListener('click', function() {
+    document.getElementById('line-chart-dropdown-content').classList.toggle('show');
+  });
+
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropdown-button')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      for (var i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+
 
   barChart.populateDropdownWithCheckboxes(data, 'Make', barChart.dropdownId);
 });
