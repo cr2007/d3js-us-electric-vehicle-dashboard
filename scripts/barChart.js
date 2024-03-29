@@ -3,18 +3,80 @@ export default class BarChart {
     this.svgSelector = svgSelector;
   }
 
-  renderBarChart(data, displayModels = false) {
-    let counts = data;
+  // Helper function to filter data based on the car manufacturer ("Make" column)
+  filterCarModel(data, make) {
+    const filteredData = data.filter((d) =>
+      d.Make.toLowerCase().includes(make.toLowerCase())
+    );
 
-    // If no search is being made, showcase the data by car make
-    if (!displayModels) {
-      counts = d3.rollup(
-        data,
+    const modelSet = new Set();
+    filteredData.forEach((d) => modelSet.add(d.Model));
+
+    const modelCounts = Array.from(modelSet).map((model) => ({
+      model,
+      count: filteredData.filter((d) => d.Model === model).length,
+    }));
+
+    return modelCounts;
+  }
+
+  populateDropdownWithCheckboxes(data, columnName, dropdownId) {
+    const uniqueValues = [...new Set(data.map((d) => d[columnName]))];
+
+    const dropdown = d3
+      .select(`#${dropdownId}`)
+      .select('.barchart-dropdown-content');
+    dropdown.selectAll('*').remove();
+
+    uniqueValues.forEach((value) => {
+      const label = dropdown.append('label');
+
+      label
+        .append('input')
+        .attr('type', 'checkbox')
+        .attr('checked', true)
+        .attr('value', value)
+        .on('change', () => this.renderBarChart(data, false));
+
+      label
+        .append('span')
+        .text(value.length > 10 ? value.substring(0, 8) + '...' : value)
+        .style('font-size', '12px');
+    });
+  }
+
+  getCheckedValues(data, columnName) {
+    let checkedValues = d3
+      .selectAll(
+        `#${this.dropdownId} .barchart-dropdown-content input[type='checkbox']:checked`
+      )
+      .nodes()
+      .map((node) => node.value);
+
+    if (checkedValues.length === 0) {
+      checkedValues = [...new Set(data.map((d) => d[columnName]))];
+    }
+
+    return checkedValues;
+  }
+
+  renderBarChart(data, displayModels = false) {
+    let counts = [];
+
+    if (displayModels) {
+      counts = data;
+    } else {
+      const checkedMakes = this.getCheckedValues(data, 'Make');
+
+      const filteredData = data.filter((d) => checkedMakes.includes(d.Make));
+
+      const carMakes = d3.rollup(
+        filteredData,
         (v) => v.length,
         (d) => d.Make
       );
 
-      counts = Array.from(counts, ([make, count]) => ({
+      counts = Array.from(carMakes, ([make, count]) => ({
         make,
         count,
       }));
@@ -68,7 +130,7 @@ export default class BarChart {
       .enter()
       .append('rect')
       .attr('class', 'bar')
-      .attr('x', (d) => x(displayModels ? d.model : d.make))
+      .attr('x', (d) => x(d[property]))
       .attr('y', chartHeight)
       .attr('width', x.bandwidth())
       .attr('height', 0)
@@ -109,7 +171,7 @@ export default class BarChart {
 
     // Removing the defaulted lines for a better visual
     xAxisGroup.select('.domain').attr('display', 'none');
-    xAxisGroup.selectAll('.tick line').attr('display', 'none');
+    // xAxisGroup.selectAll('.tick line').attr('display', 'none');
 
     // X-axis labels
     xAxisGroup

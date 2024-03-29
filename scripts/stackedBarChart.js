@@ -48,16 +48,7 @@ export default class StackedBarChart {
     const stackedData = d3.stack().keys(keys)(data);
 
     const yAxis = d3.axisLeft(yScale);
-    const yAxisGroup = svg.append('g').call(yAxis);
-
-    // Add gridlines by cloning the tick lines and extending them across the chart
-    yAxisGroup
-      .selectAll('.tick line')
-      .clone()
-      .attr('x2', width)
-      .attr('stroke-opacity', 0.1) // Adjust the opacity as needed
-      .attr('class', 'gridline')
-      .lower();
+    const yAxisGrp = svg.append('g').call(yAxis);
 
     // Create the bars
     svg
@@ -76,14 +67,13 @@ export default class StackedBarChart {
       .attr('height', (d) => yScale(d[0]) - yScale(d[1]))
       .attr('width', xScale.bandwidth());
 
-    // Add the X Axis
-    svg
+    const xAxisGroup = svg
       .append('g')
       .attr('transform', `translate(0,${height})`)
       .call(d3.axisBottom(xScale));
 
-    // Add the Y Axis
-    svg.append('g').call(d3.axisLeft(yScale));
+    xAxisGroup.select('.domain').attr('display', 'none');
+    // xAxisGroup.selectAll('.tick line').attr('display', 'none');
 
     // Add a tooltip
     const tooltip = d3
@@ -114,14 +104,9 @@ export default class StackedBarChart {
       tooltip.transition().duration(500).style('opacity', 0);
     };
 
+    yAxisGrp.select('.domain').attr('display', 'none');
+
     // Add event listeners for the tooltip
     svg.selectAll('rect').on('mouseover', mouseover).on('mouseout', mouseout);
-
-    // Optionally, you can add zoom behavior here
-    // ...
-
-    // Add legend and filter functionality
-    // You will need to implement this part
-    // ...
   }
 }

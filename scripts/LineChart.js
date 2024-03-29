@@ -3,23 +3,36 @@ export default class LineChart {
     this.svgSelector = svgSelector;
   }
 
-  renderLineChart(data) {
+  renderLineChart(data, searchedMake) {
     const margin = { top: 20, right: 30, bottom: 50, left: 60 };
     const width = 600 - margin.left - margin.right;
     const height = 350 - margin.top - margin.bottom;
 
+    let filteredData;
+
+    if (searchedMake !== undefined) {
+      filteredData = data.filter((d) =>
+        d.make.toLowerCase().includes(searchedMake.toLowerCase())
+      );
+    } else {
+      filteredData = data;
+    }
+
     const allYears = Array.from(
-      new Set(data.flatMap((d) => d.values.map((v) => v.year)))
+      new Set(filteredData.flatMap((d) => d.values.map((v) => v.year)))
     ).sort();
 
-    console.log('allYears:', allYears);
+    // console.log('allYears:', allYears);
 
     const xScale = d3.scaleBand().range([0, width]).domain(allYears).padding(1);
 
     const yScale = d3
       .scaleLinear()
       .range([height, 0])
-      .domain([-50, d3.max(data, (d) => d3.max(d.values, (v) => v.count))]);
+      .domain([
+        0,
+        d3.max(filteredData, (d) => d3.max(d.values, (v) => v.count)),
+      ]);
 
     const colorMapping = {
       TESLA: '#e41a1c',
@@ -50,17 +63,17 @@ export default class LineChart {
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     // Add gridlines
-    const gridlines = d3
-      .axisLeft(yScale)
-      .tickSize(-width)
-      .tickFormat('')
-      .ticks(10);
-    const gridGroup = svg.append('g').attr('class', 'grid').call(gridlines);
-    gridGroup
-      .selectAll('.tick')
-      .attr('stroke-opacity', 0.1)
-      .attr('stroke-dasharray', '2,2');
-    svg.select('.grid .domain').remove();
+    // const gridlines = d3
+    //   .axisLeft(yScale)
+    //   .tickSize(-width)
+    //   .tickFormat('')
+    //   .ticks(10);
+    // const gridGroup = svg.append('g').attr('class', 'grid').call(gridlines);
+    // gridGroup
+    //   .selectAll('.tick')
+    //   .attr('stroke-opacity', 0.1)
+    //   .attr('stroke-dasharray', '2,2');
+    // svg.select('.grid .domain').remove();
 
     // For the line
     const line = d3
@@ -69,41 +82,37 @@ export default class LineChart {
       .y((d) => yScale(d.count));
 
     // Bind data and create one path per make
-    data.forEach((makeData) => {
+    filteredData.forEach((makeData) => {
+      // Generate the line path
       svg
         .append('path')
         .datum(makeData.values)
         .attr('class', 'line')
         .attr('fill', 'none')
-        .attr('stroke', (d) => colorScale(makeData.make))
+        .attr('stroke', colorScale(makeData.make))
         .attr('stroke-width', 2)
-        .attr('d', line);
+        .attr('d', line(makeData.values))
+        .each((_, i, nodes) => {
+          const length = nodes[i].getTotalLength();
+          d3.select(nodes[i]).attr('stroke-dasharray', length);
+          d3.select(nodes[i]).attr('stroke-dashoffset', length);
+        })
+        .transition()
+        .duration(800)
+        .attr('stroke-dashoffset', 0);
     });
 
-    // Add the X Axis with label
-    svg
+    const xAxisGroup = svg
       .append('g')
       .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(xScale))
-      .append('text')
-      .attr('fill', '#000')
-      .attr('x', width / 2)
-      .attr('y', margin.bottom - 10)
-      .attr('text-anchor', 'end')
-      .attr('font-weight', 'bold');
+      .attr('y', margin.bottom - 50)
+      .call(d3.axisBottom(xScale));
+
+    xAxisGroup.select('.domain').attr('display', 'none');
+    // xAxisGroup.selectAll('.tick line').attr('display', 'none');
 
     // Add the Y Axis with label
-    svg
-      .append('g')
-      .call(d3.axisLeft(yScale))
-      .append('text')
-      .attr('fill', '#000')
-      .attr('transform', 'rotate(-90)')
-      .attr('y', -margin.left + 15)
-      .attr('x', -height / 2)
-      .attr('dy', '1em')
-      .attr('text-anchor', 'middle')
-      .attr('font-weight', 'bold');
+    const yAxisGrp = svg.append('g').call(d3.axisLeft(yScale));
 
     // Add a tooltip
     const tooltip = d3
@@ -127,8 +136,10 @@ export default class LineChart {
       tooltip.transition().duration(500).style('opacity', 0);
     };
 
+    yAxisGrp.select('.domain').attr('display', 'none');
+
     // Bind data and create one circle per data point
-    data.forEach((makeData) => {
+    filteredData.forEach((makeData) => {
       svg
         .selectAll(`.dot-${makeData.make}`)
         .data(makeData.values.map((d) => ({ ...d, make: makeData.make })))

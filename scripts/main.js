@@ -25,28 +25,11 @@ const loadData = async () => {
 
 // Charts
 const barChart = new BarChart('#bar-chart');
+barChart.dropdownId = 'bc-dropdown';
+
 const pieChart = new PieChart('#pie-chart');
 const stackedBarChart = new StackedBarChart('#stacked-bar-chart');
 const lineChart = new LineChart('#line-chart');
-
-// Helper function to filter data based on the car manufacturer ("Make" column)
-const filterCarMake = (data, make) => {
-  const filteredData = data.filter((d) =>
-    d.Make.toLowerCase().includes(make.toLowerCase())
-  );
-
-  // Storing each car model to the set
-  const modelSet = new Set();
-  filteredData.forEach((d) => modelSet.add(d.Model));
-
-  // Getting the total count of each car model
-  const modelCounts = Array.from(modelSet).map((model) => ({
-    model,
-    count: filteredData.filter((d) => d.Model === model).length,
-  }));
-
-  return modelCounts;
-};
 
 const handleSearch = (event) => {
   // Search via "Enter"
@@ -54,15 +37,25 @@ const handleSearch = (event) => {
     const searchInput = document.querySelector('.search input').value.trim();
 
     loadData().then((data) => {
-      // If search input is empty, render bar chart with car makes only
+      // If search input is empty, render bar chart with the car makes only
       if (searchInput === '' || searchInput.length === 0) {
-        barChart.renderBarChart(data);
+        barChart.populateDropdownWithCheckboxes(
+          data,
+          'Make',
+          barChart.dropdownId
+        );
+        barChart.renderBarChart(data, false);
         pieChart.renderPieChart(data);
+        lineChart.renderLineChart(processDataForLineChart(data));
+
         // Otherwise, filter the data based on the search input
       } else {
-        const filteredData = filterCarMake(data, searchInput);
-        barChart.renderBarChart(filteredData, true);
+        const modelCounts = barChart.filterCarModel(data, searchInput);
+
+        barChart.renderBarChart(modelCounts, true);
         pieChart.renderPieChart(data, searchInput);
+
+        lineChart.renderLineChart(processDataForLineChart(data), searchInput);
       }
     });
   }
@@ -89,7 +82,7 @@ const processDataForStackedBarChart = (data) => {
 
   structuredData.sort((a, b) => d3.ascending(a.year, b.year));
 
-  console.log('structured bar chart data', structuredData);
+  // console.log('structured bar chart data', structuredData);
 
   return structuredData;
 };
@@ -114,7 +107,7 @@ const processDataForLineChart = (data) => {
     return { make, values }; // series of counts for each make
   });
 
-  console.log('structuredLineData:', structuredData);
+  // console.log('structuredLineData:', structuredData);
 
   return structuredData;
 };
@@ -133,4 +126,12 @@ loadData().then((data) => {
   pieChart.renderPieChart(data);
   stackedBarChart.renderStackedBarChart(processedStackedData);
   lineChart.renderLineChart(processedLineData);
+
+  barChart.populateDropdownWithCheckboxes(data, 'Make', barChart.dropdownId);
 });
+
+document
+  .querySelector('.bar-chart-dropdown-btn')
+  .addEventListener('click', function () {
+    this.parentElement.classList.toggle('active');
+  });

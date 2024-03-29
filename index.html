@@ -23,9 +23,15 @@
       <main class="charts">
         <!-- c1 -->
         <div id="bar-chart-container">
-          <div class="headings">
-            <h3>Total Number of Sold Cars</h3>
-            <p>To the nearest 100</p>
+          <div class="flex-container">
+            <div class="headings">
+              <h3>Total Number of Sold Cars</h3>
+              <p>To the nearest 100</p>
+            </div>
+            <div class="bar-chart-dropdown" id="bc-dropdown">
+              <button class="bar-chart-dropdown-btn">Filter</button>
+              <div class="barchart-dropdown-content"></div>
+            </div>
           </div>
           <svg id="bar-chart"></svg>
         </div>
