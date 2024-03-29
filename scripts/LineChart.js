@@ -48,13 +48,12 @@ export default class LineChart {
       CADILLAC: '#1f78b4',
     };
 
-    // Color scale using the mapping
+    // Color scaling
     const colorScale = (make) => colorMapping[make] || '#333';
 
     // Clear any existing SVG
     d3.select(this.svgSelector).selectAll('*').remove();
 
-    // Append the SVG object to the body of the page
     const svg = d3
       .select(this.svgSelector)
       .attr('width', width + margin.left + margin.right)
@@ -81,9 +80,8 @@ export default class LineChart {
       .x((d) => xScale(d.year) + xScale.bandwidth() / 2)
       .y((d) => yScale(d.count));
 
-    // Bind data and create one path per make
+    // Generate the line path
     filteredData.forEach((makeData) => {
-      // Generate the line path
       svg
         .append('path')
         .datum(makeData.values)

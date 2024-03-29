@@ -46,6 +46,9 @@ const handleSearch = (event) => {
         );
         barChart.renderBarChart(data, false);
         pieChart.renderPieChart(data);
+        stackedBarChart.renderStackedBarChart(
+          processDataForStackedBarChart(data)
+        );
         lineChart.renderLineChart(processDataForLineChart(data));
 
         // Otherwise, filter the data based on the search input
@@ -62,15 +65,14 @@ const handleSearch = (event) => {
 };
 
 const processDataForStackedBarChart = (data) => {
-  // Assuming 'data' is your dataset after loading the CSV
   const rolledUpData = d3.rollups(
     data,
-    (v) => v.length, // This is the reducing function, counting the number of entries
-    (d) => d['Model Year'], // First level of rollup: group by 'Model Year'
-    (d) => d['Electric Vehicle Type'] // Second level of rollup: group by 'Electric Vehicle Type'
+    (v) => v.length,
+    (d) => d['Model Year'],
+    (d) => d['Electric Vehicle Type']
   );
 
-  // To structure the data for a stacked bar chart, we'll map it into an array of objects
+  // Structuring the data for the stacked bar chart
   const structuredData = rolledUpData.map(([year, types]) => {
     const entriesForYear = { year };
     types.forEach(([type, count]) => {
@@ -88,15 +90,13 @@ const processDataForStackedBarChart = (data) => {
 };
 
 const processDataForLineChart = (data) => {
-  // Get unique makes
   const makes = Array.from(new Set(data.map((d) => d.Make)));
 
-  // Get unique years
   const years = Array.from(new Set(data.map((d) => d['Model Year']))).sort(
     d3.ascending
   );
 
-  // Structure the data for the line chart
+  // Structuring the data for the line chart
   const structuredData = makes.map((make) => {
     const values = years.map((year) => {
       const count = data.filter(

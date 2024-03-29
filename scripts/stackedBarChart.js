@@ -31,7 +31,7 @@ export default class StackedBarChart {
     const colorScale = d3
       .scaleOrdinal()
       .domain(keys)
-      .range(['#f5a067', '#5E3FBE']); // Change these colors to match your desired scheme
+      .range(['#f5a067', '#5E3FBE']);
 
     // Clear any existing SVG
     d3.select(this.svgSelector).selectAll('*').remove();
@@ -63,9 +63,13 @@ export default class StackedBarChart {
       .enter()
       .append('rect')
       .attr('x', (d) => xScale(d.data.year))
+      .attr('y', (d) => yScale(0))
+      .attr('height', 0)
+      .attr('width', xScale.bandwidth())
+      .transition()
+      .duration(800)
       .attr('y', (d) => yScale(d[1]))
-      .attr('height', (d) => yScale(d[0]) - yScale(d[1]))
-      .attr('width', xScale.bandwidth());
+      .attr('height', (d) => yScale(d[0]) - yScale(d[1]));
 
     const xAxisGroup = svg
       .append('g')
