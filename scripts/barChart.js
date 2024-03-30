@@ -25,7 +25,7 @@ export default class BarChart {
 
     const dropdown = d3
       .select(`#${dropdownId}`)
-      .select('.barchart-dropdown-content');
+      .select('.bar-chart-dropdown-content');
     dropdown.selectAll('*').remove();
 
     uniqueValues.forEach((value) => {
@@ -40,7 +40,7 @@ export default class BarChart {
 
       label
         .append('span')
-        .text(value.length > 10 ? value.substring(0, 8) + '...' : value)
+        .text(value.length > 5 ? value.substring(0, 5) + '...' : value)
         .style('font-size', '12px');
     });
   }
@@ -48,7 +48,7 @@ export default class BarChart {
   getCheckedValues(data, columnName) {
     let checkedValues = d3
       .selectAll(
-        `#${this.dropdownId} .barchart-dropdown-content input[type='checkbox']:checked`
+        `#${this.dropdownId} .bar-chart-dropdown-content input[type='checkbox']:checked`
       )
       .nodes()
       .map((node) => node.value);
@@ -83,10 +83,10 @@ export default class BarChart {
     }
 
     // Dimensions
-    const width = 1000;
-    const height = 400;
+    const width = 1100;
+    const height = 500;
     const margin = { top: 10, right: 10, bottom: 30, left: 45 };
-    const chartWidth = width - margin.left - margin.right - 50;
+    const chartWidth = width;
     const chartHeight = height - margin.top - margin.bottom;
 
     // Reset the chart every time a search is being made
@@ -179,7 +179,7 @@ export default class BarChart {
       .style('text-anchor', 'middle')
       .attr('font-size', '8px')
       .attr('dy', '1em')
-      .text((d) => (d.length > 10 ? d.substring(0, 8) + '...' : d));
+      .text((d) => (d.length > 7 ? d.substring(0, 6) + '...' : d));
 
     // Y-axis counts
     const yAxisGrp = chart
@@ -216,7 +216,7 @@ export default class BarChart {
 
             svg
               .selectAll('.x-axis text')
-              .text((d) => (d.length > 10 ? d.substring(0, 8) + '...' : d));
+              .text((d) => (d.length > 7 ? d.substring(0, 6) + '...' : d));
           })
       );
     }

@@ -1,74 +1,65 @@
 export default class LineChart {
-
   constructor(svgSelector) {
-
     this.svgSelector = svgSelector;
   }
 
   populateDropdown(data) {
-
     const makes = Array.from(new Set(data.map((d) => d.Make)));
-    const dropdown = d3.select("#line-chart-dropdown-content");
+    const dropdown = d3.select('#lc-dropdown-content');
 
     makes.forEach((make) => {
-
       const label = dropdown.append('label');
 
-      label.append('input')
+      label
+        .append('input')
         .attr('type', 'checkbox')
         .attr('checked', true)
         .attr('value', make)
         .on('change', () => this.updateChart(data));
 
-      label.append('span')
-        .text(make);
-
+      label.append('span').text(make);
     });
   }
 
   getCheckedMakes() {
-
-    return d3.selectAll("#line-chart-dropdown-content input[type='checkbox']:checked")
+    return d3
+      .selectAll("#lc-dropdown-content input[type='checkbox']:checked")
       .nodes()
-      .map(el => el.value);
+      .map((el) => el.value);
   }
 
   transformData(filteredData) {
-
-    const groupedByMake = d3.groups(filteredData, d => d.Make);
+    const groupedByMake = d3.groups(filteredData, (d) => d.Make);
 
     const transformedData = groupedByMake.map(([make, entries]) => {
-
-      const countsByYear = d3.rollups(
-        entries,
-        v => v.length,
-        d => d['Model Year']
-      )
-      .map(([year, count]) => ({ year, count }))
-      .sort((a, b) => d3.ascending(a.year, b.year));
+      const countsByYear = d3
+        .rollups(
+          entries,
+          (v) => v.length,
+          (d) => d['Model Year']
+        )
+        .map(([year, count]) => ({ year, count }))
+        .sort((a, b) => d3.ascending(a.year, b.year));
 
       return { make, values: countsByYear };
-
     });
 
     return transformedData;
-
   }
 
   updateChart(originalData) {
-
     const checkedMakes = this.getCheckedMakes();
 
-    const filteredData = originalData.filter(d => checkedMakes.includes(d.Make));
+    const filteredData = originalData.filter((d) =>
+      checkedMakes.includes(d.Make)
+    );
 
     const transformedData = this.transformData(filteredData);
 
     this.renderLineChart(transformedData, undefined);
-
   }
 
   renderLineChart(data, searchedMake) {
-
     const margin = { top: 20, right: 30, bottom: 50, left: 60 };
     const width = 600 - margin.left - margin.right;
     const height = 350 - margin.top - margin.bottom;
@@ -76,79 +67,82 @@ export default class LineChart {
     let filteredData;
 
     if (searchedMake !== undefined) {
-
-      filteredData = data.filter((d) => d.make.toLowerCase().includes(searchedMake.toLowerCase()));
+      filteredData = data.filter((d) =>
+        d.make.toLowerCase().includes(searchedMake.toLowerCase())
+      );
     } else {
-
       filteredData = data;
     }
 
-    const allYears = Array.from(new Set(filteredData.flatMap((d) => d.values.map((v) => v.year)))).sort();
+    const allYears = Array.from(
+      new Set(filteredData.flatMap((d) => d.values.map((v) => v.year)))
+    ).sort();
 
     const xScale = d3.scaleBand().range([0, width]).domain(allYears).padding(1);
 
-    const yScale = d3.scaleLinear().range([height, 0]).domain([0, d3.max(filteredData, (d) => d3.max(d.values, (v) => v.count)),]);
+    const yScale = d3
+      .scaleLinear()
+      .range([height, 0])
+      .domain([
+        0,
+        d3.max(filteredData, (d) => d3.max(d.values, (v) => v.count)),
+      ]);
 
     const makeColors = {};
 
     const colorScale = (make) => {
-
       if (!makeColors[make]) {
-
         makeColors[make] = getRandomColor();
-
       }
 
       return makeColors[make];
-
     };
 
     function getRandomColor() {
-
       const letters = '0123456789ABCDEF';
 
       let color = '#';
 
       for (let i = 0; i < 6; i++) {
-
         color += letters[Math.floor(Math.random() * 16)];
-
       }
 
       return color;
-
     }
 
     const generateLegend = () => {
-
       const legendContainer = d3.select('.legend-line');
 
       legendContainer.selectAll('.legend-row-line').remove();
 
-      let legendRow = legendContainer.append('div').attr('class', 'legend-row-line');
+      let legendRow = legendContainer
+        .append('div')
+        .attr('class', 'legend-row-line');
 
       let count = 0;
 
-      Object.keys(makeColors).forEach((make, index) => {
-
+      Object.keys(makeColors).forEach((make) => {
         if (count >= 5) {
-
-          legendRow = legendContainer.append('div').attr('class', 'legend-row-line');
-
+          legendRow = legendContainer
+            .append('div')
+            .attr('class', 'legend-row-line');
           count = 0;
-
         }
 
-        const legendItem = legendRow.append('div').attr('class', 'legend-item-line');
+        const legendItem = legendRow
+          .append('div')
+          .attr('class', 'legend-item-line');
 
-        legendItem.append('span').attr('class', 'legend-dot-line').style('color', makeColors[make]).html('&#11044;');
+        legendItem
+          .append('span')
+          .attr('class', 'legend-dot-line')
+          .style('color', makeColors[make])
+          .html('&#11044;');
 
         legendItem.append('span').attr('class', 'legend-text-line').text(make);
 
         count++;
-
       });
-
     };
 
     d3.select(this.svgSelector).selectAll('*').remove();
@@ -181,24 +175,22 @@ export default class LineChart {
       .y((d) => yScale(d.count));
 
     filteredData.forEach((makeData) => {
-
-    svg
-    .append('path')
-    .datum(makeData.values)
-    .attr('class', 'line')
-    .attr('fill', 'none')
-    .attr('stroke', colorScale(makeData.make))
-    .attr('stroke-width', 2)
-    .attr('d', line(makeData.values))
-    .each((_, i, nodes) => {
-      const length = nodes[i].getTotalLength();
-      d3.select(nodes[i]).attr('stroke-dasharray', length);
-      d3.select(nodes[i]).attr('stroke-dashoffset', length);
-    })
-    .transition()
-    .duration(800)
-    .attr('stroke-dashoffset', 0);
-
+      svg
+        .append('path')
+        .datum(makeData.values)
+        .attr('class', 'line')
+        .attr('fill', 'none')
+        .attr('stroke', colorScale(makeData.make))
+        .attr('stroke-width', 2)
+        .attr('d', line(makeData.values))
+        .each((_, i, nodes) => {
+          const length = nodes[i].getTotalLength();
+          d3.select(nodes[i]).attr('stroke-dasharray', length);
+          d3.select(nodes[i]).attr('stroke-dashoffset', length);
+        })
+        .transition()
+        .duration(800)
+        .attr('stroke-dashoffset', 0);
     });
 
     const xAxisGroup = svg
@@ -227,7 +219,9 @@ export default class LineChart {
       .style('border-radius', '8px')
       .style('pointer-events', 'none');
 
-    const mouseout = () => {tooltip.transition().duration(500).style('opacity', 0);};
+    const mouseout = () => {
+      tooltip.transition().duration(500).style('opacity', 0);
+    };
 
     yAxisGrp.select('.domain').attr('display', 'none');
 
@@ -256,6 +250,5 @@ export default class LineChart {
     });
 
     generateLegend();
-
   }
 }

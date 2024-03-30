@@ -90,10 +90,11 @@ const processDataForStackedBarChart = (data) => {
 };
 
 const processDataForLineChart = (data) => {
-
   const makes = Array.from(new Set(data.map((d) => d.Make)));
 
-  const years = Array.from(new Set(data.map((d) => d['Model Year']))).sort(d3.ascending);
+  const years = Array.from(new Set(data.map((d) => d['Model Year']))).sort(
+    d3.ascending
+  );
 
   const structuredData = makes.map((make) => {
     const values = years.map((year) => {
@@ -107,8 +108,6 @@ const processDataForLineChart = (data) => {
 
   return structuredData;
 };
-
-
 
 // Event listener to search input
 document
@@ -127,28 +126,17 @@ loadData().then((data) => {
   lineChart.populateDropdown(data);
   lineChart.renderLineChart(processedLineData);
 
-  document.querySelector('.dropdown-button').addEventListener('click', function() {
-    document.getElementById('line-chart-dropdown-content').classList.toggle('show');
-  });
-
-  window.onclick = function(event) {
-    if (!event.target.matches('.dropdown-button')) {
-      var dropdowns = document.getElementsByClassName("dropdown-content");
-      for (var i = 0; i < dropdowns.length; i++) {
-        var openDropdown = dropdowns[i];
-        if (openDropdown.classList.contains('show')) {
-          openDropdown.classList.remove('show');
-        }
-      }
-    }
-  }
-
-
   barChart.populateDropdownWithCheckboxes(data, 'Make', barChart.dropdownId);
 });
 
 document
   .querySelector('.bar-chart-dropdown-btn')
-  .addEventListener('click', function () {
-    this.parentElement.classList.toggle('active');
+  .addEventListener('click', (event) => {
+    event.currentTarget.parentElement.classList.toggle('active');
+  });
+
+document
+  .querySelector('.line-chart-dropdown-btn')
+  .addEventListener('click', () => {
+    document.getElementById('lc-dropdown-content').classList.toggle('show');
   });

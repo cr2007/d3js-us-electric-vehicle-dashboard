@@ -14,55 +14,48 @@
 }
 
 .bar-chart-dropdown-btn {
-  margin-right: 25px;
-}
-
-.bar-chart-dropdown .bar-chart-dropdown-btn {
-  /* margin-right: 100px; */
-  background-color: #f9f9f9;
-  color: #151414;
-  padding: 10px;
+  padding: 8px 12px;
   border: 1px solid #ccc;
+  background-color: #fff;
   cursor: pointer;
-  width: 100px;
-  /* width: 100%; */
-  text-align: left;
-  border-radius: 4px;
-  box-sizing: border-box;
-  outline: none;
+  margin-left: 520px;
 }
 
-.bar-chart-dropdown .bar-chart-dropdown-btn:hover,
-.bar-chart-dropdown .bar-chart-dropdown-btn:focus {
-  background-color: #e6e6e6;
-}
-
-.bar-chart-dropdown .barchart-dropdown-content {
+.bar-chart-dropdown-content {
   display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  max-height: 300px;
+  overflow-y: auto;
   border: 1px solid #ccc;
-  border-radius: 12px;
-  margin-top: 2px;
-  width: 100px;
-  height: 0px;
+  border-top: none;
+  margin-left: 395px;
 }
 
-.bar-chart-dropdown.active .barchart-dropdown-content {
-  display: block;
-}
-
-.bar-chart-dropdown .barchart-dropdown-content label {
+.bar-chart-dropdown-content label {
   display: block;
   padding: 5px 10px;
-  margin: 0;
+  clear: both;
+  font-size: 14px;
   white-space: nowrap;
-  cursor: pointer;
 }
 
-.bar-chart-dropdown .barchart-dropdown-content input[type='checkbox'] {
+.bar-chart-dropdown-content input[type='checkbox'] {
   margin-right: 5px;
   accent-color: #5e3fbe;
 }
 
-.bar-chart-dropdown .barchart-dropdown-content label:hover {
-  background-color: #ecebeb;
+.bar-chart-dropdown-content label:hover {
+  background-color: #f1f1f1;
+}
+
+.bar-chart-dropdown:hover .bar-chart-dropdown-content {
+  display: block;
+}
+
+.bar-chart-dropdown .show {
+  display: block;
 }
