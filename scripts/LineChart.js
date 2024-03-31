@@ -61,8 +61,8 @@ export default class LineChart {
 
   renderLineChart(data, searchedMake) {
     const margin = { top: 20, right: 30, bottom: 50, left: 60 };
-    const width = 600 - margin.left - margin.right;
-    const height = 350 - margin.top - margin.bottom;
+    const width = 900 - margin.left - margin.right;
+    const height = 450 - margin.top - margin.bottom;
 
     let filteredData;
 
@@ -111,7 +111,7 @@ export default class LineChart {
     }
 
     const generateLegend = () => {
-      const legendContainer = d3.select('.legend-line');
+      const legendContainer = d3.select('.legend-line').style('width', '900px'); // Set the width as per your requirement;
 
       legendContainer.selectAll('.legend-row-line').remove();
 
@@ -122,7 +122,7 @@ export default class LineChart {
       let count = 0;
 
       Object.keys(makeColors).forEach((make) => {
-        if (count >= 5) {
+        if (count >= 7) {
           legendRow = legendContainer
             .append('div')
             .attr('class', 'legend-row-line');

@@ -17,7 +17,7 @@ export default class GroupedBarChart {
       // Dimensions and margins
       const margin = { top: 20, right: 20, bottom: 40, left: 80 };
       const width = 700 - margin.left - margin.right;
-      const height = 500 - margin.top - margin.bottom;
+      const height = 550 - margin.top - margin.bottom;
 
       // Scales - adapted for the new data structure
       const yScale = d3.scaleBand()
@@ -32,6 +32,9 @@ export default class GroupedBarChart {
       const colorScale = d3.scaleOrdinal()
                            .domain(keys)
                            .range(['#f5a067', '#5E3FBE']);
+
+
+      d3.select(this.svgSelector).selectAll("*").remove();
 
       // Append SVG to the body
       const svg = d3.select(this.svgSelector)

@@ -5,8 +5,8 @@ export default class PieChart {
 
   createPieChart(data) {
     // Dimensions
-    const width = 400;
-    const height = 250;
+    const width = 600;
+    const height = 400;
     const radius = Math.min(width, height) / 2;
 
     // Reset the chart every time a search is being made

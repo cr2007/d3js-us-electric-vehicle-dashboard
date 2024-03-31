@@ -2,7 +2,7 @@
 #pie-chart-container {
   grid-area: c2;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 #pie-chart {
@@ -13,7 +13,10 @@
 .legend-pie {
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin-left: 20px;
+  padding-top: 80px;
+
 }
 
 .legend-item-pie {
@@ -27,5 +30,6 @@
 }
 
 .legend-text-pie {
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: bold;
 }

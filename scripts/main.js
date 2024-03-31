@@ -53,6 +53,7 @@ const handleSearch = (event) => {
         pieChart.renderPieChart(data);
         stackedBarChart.renderStackedBarChart(processDataForStackedBarChart(data));
         lineChart.renderLineChart(processDataForLineChart(data));
+        groupedChart.renderGroupedBarChart(processDataForgrouprdBarChart(data));
 
         // Otherwise, filter the data based on the search input
       } else {
@@ -62,6 +63,7 @@ const handleSearch = (event) => {
         pieChart.renderPieChart(data, searchInput);
         lineChart.renderLineChart(processDataForLineChart(data), searchInput);
         stackedBarChart.renderStackedBarChart(processDataForStackedBarChart(data, searchInput));
+        groupedChart.renderGroupedBarChart(processDataForgrouprdBarChart(data, searchInput));
 
       }
     });
@@ -96,9 +98,13 @@ const processDataForStackedBarChart = (data, searchTerm) => {
 
 };
 
-const processDataForgrouprdBarChart = (data) => {
+const processDataForgrouprdBarChart = (data, searchTerm) => {
+
+  const filteredData = searchTerm ? data.filter(d => d.Make.toLowerCase().includes(searchTerm.toLowerCase())) : data;
+
+
   const rolledUpData = d3.rollups(
-    data,
+    filteredData,
     (v) => v.length,
     (d) => d['Model Year'],
     (d) => d['Clean Alternative Fuel Vehicle (CAFV) Eligibility']
