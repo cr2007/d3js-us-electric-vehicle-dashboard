@@ -4,6 +4,8 @@ import BarChart from './barChart.js';
 import PieChart from './pieChart.js';
 import StackedBarChart from './stackedBarChart.js';
 import LineChart from './lineChart.js';
+import GroupedChart from './groupedChart.js';
+
 
 console.log(`D3 loaded, version ${d3.version}`);
 
@@ -30,6 +32,8 @@ barChart.dropdownId = 'bc-dropdown';
 const pieChart = new PieChart('#pie-chart');
 const stackedBarChart = new StackedBarChart('#stacked-bar-chart');
 const lineChart = new LineChart('#line-chart');
+const groupedChart = new GroupedChart('#grouped-chart');
+
 
 const handleSearch = (event) => {
   // Search via "Enter"
@@ -92,6 +96,35 @@ const processDataForStackedBarChart = (data, searchTerm) => {
 
 };
 
+const processDataForgrouprdBarChart = (data) => {
+  const rolledUpData = d3.rollups(
+    data,
+    (v) => v.length,
+    (d) => d['Model Year'],
+    (d) => d['Clean Alternative Fuel Vehicle (CAFV) Eligibility']
+  );
+
+  const structuredDataArray = rolledUpData.map(([year, types]) => {
+    const groups = types.map(([type, count]) => ({
+      grp: type,
+      count
+    }));
+
+    const ttl = groups.reduce((sum, group) => sum + group.count, 0);
+
+    return { year, groups, ttl };
+  });
+
+  structuredDataArray.sort((a, b) => b.ttl - a.ttl);
+
+  const adaptedStructure = structuredDataArray.map(({ year: yr, groups }) => ({
+    yr,
+    groups: groups.map(({ grp, count }) => ({ grp, count }))
+  }));
+
+  console.log("THIS IS SPARTA:", adaptedStructure);
+  return adaptedStructure;
+};
 
 const processDataForLineChart = (data) => {
   const makes = Array.from(new Set(data.map((d) => d.Make)));
@@ -122,10 +155,14 @@ document
 loadData().then((data) => {
   const processedStackedData = processDataForStackedBarChart(data);
   const processedLineData = processDataForLineChart(data);
+  const processedGroupedData = processDataForgrouprdBarChart(data);
+
 
   barChart.renderBarChart(data);
   pieChart.renderPieChart(data);
   stackedBarChart.renderStackedBarChart(processedStackedData);
+  groupedChart.renderGroupedBarChart(processedGroupedData);
+
 
   lineChart.populateDropdown(data);
   lineChart.renderLineChart(processedLineData);
