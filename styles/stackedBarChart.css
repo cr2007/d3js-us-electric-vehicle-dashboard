@@ -31,3 +31,10 @@
   border-radius: 20%;
   margin-right: 5px;
 }
+
+.legend-stackedbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}

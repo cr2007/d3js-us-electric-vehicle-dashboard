@@ -5,6 +5,9 @@ export default class StackedBarChart {
   }
 
   renderStackedBarChart(data) {
+
+    console.log('Stacked bar chart data:', data);
+
     // Correct keys based on your data structure
     const keys = [
       'Battery Electric Vehicle (BEV)',

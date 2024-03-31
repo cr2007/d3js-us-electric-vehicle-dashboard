@@ -44,11 +44,10 @@ const handleSearch = (event) => {
           'Make',
           barChart.dropdownId
         );
+
         barChart.renderBarChart(data, false);
         pieChart.renderPieChart(data);
-        stackedBarChart.renderStackedBarChart(
-          processDataForStackedBarChart(data)
-        );
+        stackedBarChart.renderStackedBarChart(processDataForStackedBarChart(data));
         lineChart.renderLineChart(processDataForLineChart(data));
 
         // Otherwise, filter the data based on the search input
@@ -57,24 +56,29 @@ const handleSearch = (event) => {
 
         barChart.renderBarChart(modelCounts, true);
         pieChart.renderPieChart(data, searchInput);
-
         lineChart.renderLineChart(processDataForLineChart(data), searchInput);
+        stackedBarChart.renderStackedBarChart(processDataForStackedBarChart(data, searchInput));
+
       }
     });
   }
 };
 
-const processDataForStackedBarChart = (data) => {
+document.querySelector('.search input').addEventListener('keydown', handleSearch);
+
+const processDataForStackedBarChart = (data, searchTerm) => {
+
+  const filteredData = searchTerm ? data.filter(d => d.Make.toLowerCase().includes(searchTerm.toLowerCase())) : data;
+
   const rolledUpData = d3.rollups(
-    data,
+    filteredData,
     (v) => v.length,
     (d) => d['Model Year'],
     (d) => d['Electric Vehicle Type']
   );
 
-  // Structuring the data for the stacked bar chart
   const structuredData = rolledUpData.map(([year, types]) => {
-    const entriesForYear = { year };
+    const entriesForYear = { year, 'Battery Electric Vehicle (BEV)': 0, 'Plug-in Hybrid Electric Vehicle (PHEV)': 0 };
     types.forEach(([type, count]) => {
       entriesForYear[type] = count;
     });
@@ -84,10 +88,10 @@ const processDataForStackedBarChart = (data) => {
 
   structuredData.sort((a, b) => d3.ascending(a.year, b.year));
 
-  // console.log('structured bar chart data', structuredData);
-
   return structuredData;
+
 };
+
 
 const processDataForLineChart = (data) => {
   const makes = Array.from(new Set(data.map((d) => d.Make)));
