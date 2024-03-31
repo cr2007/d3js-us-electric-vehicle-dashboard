@@ -3,28 +3,90 @@ export default class BarChart {
     this.svgSelector = svgSelector;
   }
 
-  renderBarChart(data, displayModels = false) {
-    let counts = data;
+  // Helper function to filter data based on the car manufacturer ("Make" column)
+  filterCarModel(data, make) {
+    const filteredData = data.filter((d) =>
+      d.Make.toLowerCase().includes(make.toLowerCase())
+    );
 
-    // If no search is being made, showcase the data by car make
-    if (!displayModels) {
-      counts = d3.rollup(
-        data,
+    const modelSet = new Set();
+    filteredData.forEach((d) => modelSet.add(d.Model));
+
+    const modelCounts = Array.from(modelSet).map((model) => ({
+      model,
+      count: filteredData.filter((d) => d.Model === model).length,
+    }));
+
+    return modelCounts;
+  }
+
+  populateDropdownWithCheckboxes(data, columnName, dropdownId) {
+    const uniqueValues = [...new Set(data.map((d) => d[columnName]))];
+
+    const dropdown = d3
+      .select(`#${dropdownId}`)
+      .select('.bar-chart-dropdown-content');
+    dropdown.selectAll('*').remove();
+
+    uniqueValues.forEach((value) => {
+      const label = dropdown.append('label');
+
+      label
+        .append('input')
+        .attr('type', 'checkbox')
+        .attr('checked', true)
+        .attr('value', value)
+        .on('change', () => this.renderBarChart(data, false));
+
+      label
+        .append('span')
+        .text(value.length > 5 ? value.substring(0, 5) + '...' : value)
+        .style('font-size', '12px');
+    });
+  }
+
+  getCheckedValues(data, columnName) {
+    let checkedValues = d3
+      .selectAll(
+        `#${this.dropdownId} .bar-chart-dropdown-content input[type='checkbox']:checked`
+      )
+      .nodes()
+      .map((node) => node.value);
+
+    if (checkedValues.length === 0) {
+      checkedValues = [...new Set(data.map((d) => d[columnName]))];
+    }
+
+    return checkedValues;
+  }
+
+  renderBarChart(data, displayModels = false) {
+    let counts = [];
+
+    if (displayModels) {
+      counts = data;
+    } else {
+      const checkedMakes = this.getCheckedValues(data, 'Make');
+
+      const filteredData = data.filter((d) => checkedMakes.includes(d.Make));
+
+      const carMakes = d3.rollup(
+        filteredData,
         (v) => v.length,
         (d) => d.Make
       );
 
-      counts = Array.from(counts, ([make, count]) => ({
+      counts = Array.from(carMakes, ([make, count]) => ({
         make,
         count,
       }));
     }
 
     // Dimensions
-    const width = 1000;
-    const height = 400;
+    const width = 1100;
+    const height = 500;
     const margin = { top: 10, right: 10, bottom: 30, left: 45 };
-    const chartWidth = width - margin.left - margin.right - 50;
+    const chartWidth = width;
     const chartHeight = height - margin.top - margin.bottom;
 
     // Reset the chart every time a search is being made
@@ -68,7 +130,7 @@ export default class BarChart {
       .enter()
       .append('rect')
       .attr('class', 'bar')
-      .attr('x', (d) => x(displayModels ? d.model : d.make))
+      .attr('x', (d) => x(d[property]))
       .attr('y', chartHeight)
       .attr('width', x.bandwidth())
       .attr('height', 0)
@@ -109,7 +171,7 @@ export default class BarChart {
 
     // Removing the defaulted lines for a better visual
     xAxisGroup.select('.domain').attr('display', 'none');
-    xAxisGroup.selectAll('.tick line').attr('display', 'none');
+    // xAxisGroup.selectAll('.tick line').attr('display', 'none');
 
     // X-axis labels
     xAxisGroup
@@ -117,7 +179,7 @@ export default class BarChart {
       .style('text-anchor', 'middle')
       .attr('font-size', '8px')
       .attr('dy', '1em')
-      .text((d) => (d.length > 10 ? d.substring(0, 8) + '...' : d));
+      .text((d) => (d.length > 7 ? d.substring(0, 6) + '...' : d));
 
     // Y-axis counts
     const yAxisGrp = chart
@@ -154,7 +216,7 @@ export default class BarChart {
 
             svg
               .selectAll('.x-axis text')
-              .text((d) => (d.length > 10 ? d.substring(0, 8) + '...' : d));
+              .text((d) => (d.length > 7 ? d.substring(0, 6) + '...' : d));
           })
       );
     }

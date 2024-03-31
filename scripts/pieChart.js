@@ -21,7 +21,7 @@ export default class PieChart {
           if (d.type === 'Plug-in Hybrid Electric Vehicle (PHEV)') {
             return '#5E3FBE';
           } else if (d.type === 'Battery Electric Vehicle (BEV)') {
-            return '#F4F0FD';
+            return '#f5a067';
           }
         })
       );
@@ -69,8 +69,9 @@ export default class PieChart {
       .attr('text-anchor', 'middle')
       .text((d) => `${d.data.value.toFixed(1)}%`)
       .style('fill', (d) =>
-        d.data.type === 'Battery Electric Vehicle (BEV)' ? 'black' : 'white'
-      );
+        d.data.type === 'Battery Electric Vehicle (BEV)' ? '#black' : '#f4f0fd'
+      ).style('font-size', '16px')
+      .style('font-weight', 'bold');
 
     arcs.exit().remove();
   }
