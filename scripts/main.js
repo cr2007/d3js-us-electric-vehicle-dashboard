@@ -57,6 +57,7 @@ const handleSearch = (event) => {
         stackedBarChart.renderStackedBarChart(processDataForStackedBarChart(data));
         lineChart.renderLineChart(processDataForLineChart(data));
         groupedChart.renderGroupedBarChart(processDataForgrouprdBarChart(data));
+        scatterPlot.render(processScatterData(data));
 
         // Otherwise, filter the data based on the search input
       } else {
@@ -67,6 +68,7 @@ const handleSearch = (event) => {
         lineChart.renderLineChart(processDataForLineChart(data), searchInput);
         stackedBarChart.renderStackedBarChart(processDataForStackedBarChart(data, searchInput));
         groupedChart.renderGroupedBarChart(processDataForgrouprdBarChart(data, searchInput));
+        scatterPlot.render(processScatterData(data, searchInput));
 
       }
     });
@@ -108,18 +110,21 @@ const processDataForStackedBarChart = (data, searchTerm) => {
  * @param {Array} data - The input data, an array of objects where each object represents a car model.
  * @return {Array} An array of arrays where each sub-array contains a "Model Year" and the corresponding total "Electric Range".
  */
-const processScatterData = (data) => {
+const processScatterData = (data, searchTerm) => {
+
+  const filteredData = searchTerm ? data.filter(d => d.Make.toLowerCase().includes(searchTerm.toLowerCase())) : data;
+
   // Map through the data and extract the "Model Year" from each object
   // Use Set to remove duplicates, then convert back to an array
   // Sort the array in ascending order
-  const years = Array.from(new Set(data.map((d) => d['Model Year']))).sort(
+  const years = Array.from(new Set(filteredData.map((d) => d['Model Year']))).sort(
     d3.ascending
   );
 
   // Map through the data and extract the "Electric Range" from each object
   // Use Set to remove duplicates, then convert back to an array
   // Sort the array in ascending order
-  const range = Array.from(new Set(data.map((d) => d['Electric Range']))).sort(
+  const range = Array.from(new Set(filteredData.map((d) => d['Electric Range']))).sort(
     d3.ascending
   );
 
@@ -130,7 +135,7 @@ const processScatterData = (data) => {
   // Reduce the filtered data to get the sum of "Electric Range"
   // Return an array with the year and the sum
   const structuredData = years.map((year) => {
-    const yearData = data.filter((d) => d['Model Year'] === year);
+    const yearData = filteredData.filter((d) => d['Model Year'] === year);
     const sum = yearData.reduce((acc, curr) => acc + parseInt(curr['Electric Range']), 0);
     const average = sum / yearData.length;
     return [year, average];
@@ -210,13 +215,11 @@ loadData().then((data) => {
   const processedScatterData = processScatterData(data);
 
 
-
   barChart.renderBarChart(data);
   pieChart.renderPieChart(data);
   stackedBarChart.renderStackedBarChart(processedStackedData);
   groupedChart.renderGroupedBarChart(processedGroupedData);
   scatterPlot.render(processedScatterData);
-
 
 
   lineChart.populateDropdown(data);
