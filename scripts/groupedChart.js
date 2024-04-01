@@ -47,6 +47,16 @@ export default class GroupedBarChart {
       const yAxis = d3.axisLeft(yScale);
       const xAxis = d3.axisBottom(xScale);
 
+    // Add the Y gridlines
+    svg.append('g')
+    .attr('class', 'grid')
+    .call(d3.axisLeft(yScale)
+        .tickSize(-width)
+        .tickFormat(''))
+    .selectAll(".tick line")
+    .attr('stroke', 'lightgrey')
+    .attr('stroke-dasharray', '3,3');
+
       svg.append('g').call(yAxis);
       svg.append('g').attr('transform', `translate(0,${height})`).call(xAxis);
 

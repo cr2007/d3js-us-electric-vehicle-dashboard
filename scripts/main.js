@@ -3,7 +3,7 @@
 import BarChart from './barChart.js';
 import PieChart from './pieChart.js';
 import StackedBarChart from './stackedBarChart.js';
-import LineChart from './lineChart.js';
+import LineChart from './LineChart.js';
 import GroupedChart from './groupedChart.js';
 import ScatterPlot from './scatterPlot.js';
 
@@ -214,13 +214,11 @@ loadData().then((data) => {
   const processedGroupedData = processDataForgrouprdBarChart(data);
   const processedScatterData = processScatterData(data);
 
-
   barChart.renderBarChart(data);
   pieChart.renderPieChart(data);
   stackedBarChart.renderStackedBarChart(processedStackedData);
   groupedChart.renderGroupedBarChart(processedGroupedData);
   scatterPlot.render(processedScatterData);
-
 
   lineChart.populateDropdown(data);
   lineChart.renderLineChart(processedLineData);
