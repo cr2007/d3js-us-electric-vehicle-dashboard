@@ -5,6 +5,7 @@ import PieChart from './pieChart.js';
 import StackedBarChart from './stackedBarChart.js';
 import LineChart from './lineChart.js';
 import GroupedChart from './groupedChart.js';
+import ScatterPlot from './scatterPlot.js';
 
 
 console.log(`D3 loaded, version ${d3.version}`);
@@ -33,6 +34,8 @@ const pieChart = new PieChart('#pie-chart');
 const stackedBarChart = new StackedBarChart('#stacked-bar-chart');
 const lineChart = new LineChart('#line-chart');
 const groupedChart = new GroupedChart('#grouped-chart');
+const scatterPlot = new ScatterPlot('#scatter-plot');
+
 
 
 const handleSearch = (event) => {
@@ -96,6 +99,48 @@ const processDataForStackedBarChart = (data, searchTerm) => {
 
   return structuredData;
 
+};
+
+/**
+ * Processes the input data to structure it for a scatter plot.
+ * The function calculates the sum of the "Electric Range" for each unique "Model Year".
+ *
+ * @param {Array} data - The input data, an array of objects where each object represents a car model.
+ * @return {Array} An array of arrays where each sub-array contains a "Model Year" and the corresponding total "Electric Range".
+ */
+const processScatterData = (data) => {
+  // Map through the data and extract the "Model Year" from each object
+  // Use Set to remove duplicates, then convert back to an array
+  // Sort the array in ascending order
+  const years = Array.from(new Set(data.map((d) => d['Model Year']))).sort(
+    d3.ascending
+  );
+
+  // Map through the data and extract the "Electric Range" from each object
+  // Use Set to remove duplicates, then convert back to an array
+  // Sort the array in ascending order
+  const range = Array.from(new Set(data.map((d) => d['Electric Range']))).sort(
+    d3.ascending
+  );
+
+  // console.log('RANGE: ', range);
+
+  // Map through the unique years
+  // For each year, filter the data to get objects with that year
+  // Reduce the filtered data to get the sum of "Electric Range"
+  // Return an array with the year and the sum
+  const structuredData = years.map((year) => {
+    const yearData = data.filter((d) => d['Model Year'] === year);
+    const sum = yearData.reduce((acc, curr) => acc + parseInt(curr['Electric Range']), 0);
+    const average = sum / yearData.length;
+    return [year, average];
+  });
+
+  // Log the structured data
+  console.log('structuredScatterData SCATRRRERERRERERERERER:', structuredData);
+
+  // Return the structured data
+  return structuredData;
 };
 
 const processDataForgrouprdBarChart = (data, searchTerm) => {
@@ -162,12 +207,16 @@ loadData().then((data) => {
   const processedStackedData = processDataForStackedBarChart(data);
   const processedLineData = processDataForLineChart(data);
   const processedGroupedData = processDataForgrouprdBarChart(data);
+  const processedScatterData = processScatterData(data);
+
 
 
   barChart.renderBarChart(data);
   pieChart.renderPieChart(data);
   stackedBarChart.renderStackedBarChart(processedStackedData);
   groupedChart.renderGroupedBarChart(processedGroupedData);
+  scatterPlot.render(processedScatterData);
+
 
 
   lineChart.populateDropdown(data);

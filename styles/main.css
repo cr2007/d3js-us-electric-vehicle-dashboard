@@ -2,6 +2,8 @@
 @import './pieChart.css';
 @import './stackedBarChart.css';
 @import './lineChart.css';
+@import "./scatterPlot.css";
+
 
 * {
   color: #222;
@@ -90,13 +92,6 @@ h1 {
 /* c7 */
 .card-7 {
   grid-area: c7;
-  background-color: #783368;
-  border-radius: 10px;
-}
-
-/* c8 */
-.card-8 {
-  grid-area: c8;
   background-color: #783368;
   border-radius: 10px;
 }
