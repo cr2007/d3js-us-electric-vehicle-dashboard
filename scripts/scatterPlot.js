@@ -30,32 +30,29 @@ export default class ScatterPlot {
     this.yAxis = this.plot.append('g').call(d3.axisLeft(this.scaleY));
     this.yAxis.select('.domain').attr('stroke', 'none');
 
+    // Adjust X-axis label
+    this.labelX = this.svg
+      .append('text')
+      .attr(
+        'transform',
+        `translate(${width / 2}, ${height + margin.top + margin.bottom - 10})`
+      )
+      .style('text-anchor', 'middle')
+      .style('font-size', '16px')
+      .style('font-weight', '500')
+      .text('Years');
 
-// Adjust X-axis label
-this.labelX = this.svg
-  .append('text')
-  .attr(
-    'transform',
-    `translate(${width / 2}, ${height + margin.top + margin.bottom - 10})`
-  )
-  .style('text-anchor', 'middle')
-  .style("font-size", "16px")
-  .style("font-weight", "bold")
-  .text('Years');
-
-// Y-axis label positioning
-this.labelY = this.svg
-  .append('text')
-  .attr('transform', `rotate(-90)`)
-  .attr('y', margin.left / 3) // This moves the label horizontally when rotated
-  .attr('x', -(margin.top + height / 2)) // This moves the label vertically when rotated
-  .attr('dy', '.75em') // Adjusts distance from the y-axis
-  .style('text-anchor', 'middle')
-  .style("font-size", "16px")
-  .style("font-weight", "bold")
-  .text('Electric Range (Kms)');
-
-
+    // Y-axis label positioning
+    this.labelY = this.svg
+      .append('text')
+      .attr('transform', `rotate(-90)`)
+      .attr('y', margin.left / 3)
+      .attr('x', -(margin.top + height / 2))
+      .attr('dy', '.75em')
+      .style('text-anchor', 'middle')
+      .style('font-size', '16px')
+      .style('font-weight', '500')
+      .text('Electric Range (Kms)');
   }
 
   updateScales(data) {
@@ -76,16 +73,17 @@ this.labelY = this.svg
   render(data) {
     this.updateScales(data);
 
-      // Gridlines
-  this.yAxis.selectAll('.tick')
-  .append('line')
-  .classed('grid-line', true)
-  .attr('stroke', 'lightgrey')
-  .attr('stroke-dasharray', '3,3')
-  .attr('x1', 0)
-  .attr('x2', 550)
-  .attr('y1', 0)
-  .attr('y2', 0);
+    // Gridlines
+    this.yAxis
+      .selectAll('.tick')
+      .append('line')
+      .classed('grid-line', true)
+      .attr('stroke', 'lightgrey')
+      .attr('stroke-dasharray', '3,3')
+      .attr('x1', 0)
+      .attr('x2', 550)
+      .attr('y1', 0)
+      .attr('y2', 0);
 
     // Showing the plots
     this.plot

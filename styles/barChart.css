@@ -3,36 +3,34 @@
   grid-area: c1;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  /* width: fit-content; */
-  /* height: fit-content; */
 }
 
 .flex-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
 }
 
 .bar-chart-dropdown-btn {
-  padding: 8px 12px;
+  padding: 12px 30px;
+  font-size: 16px;
   border: 1px solid #ccc;
   background-color: #fff;
   cursor: pointer;
-  margin-left: 520px;
+  margin-left: 1520px;
+  border-radius: 5px;
 }
 
 .bar-chart-dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 160px;
+  /* min-width: 160px; */
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   max-height: 300px;
   overflow-y: auto;
   border: 1px solid #ccc;
   border-top: none;
-  margin-left: 395px;
+  margin-left: 1420px;
 }
 
 .bar-chart-dropdown-content label {

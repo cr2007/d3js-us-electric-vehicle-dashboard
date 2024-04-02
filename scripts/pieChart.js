@@ -70,8 +70,9 @@ export default class PieChart {
       .text((d) => `${d.data.value.toFixed(1)}%`)
       .style('fill', (d) =>
         d.data.type === 'Battery Electric Vehicle (BEV)' ? '#black' : '#f4f0fd'
-      ).style('font-size', '16px')
-      .style('font-weight', 'bold');
+      )
+      .style('font-size', '26px')
+      .style('font-weight', '500');
 
     arcs.exit().remove();
   }

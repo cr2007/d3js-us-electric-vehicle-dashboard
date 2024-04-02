@@ -41,11 +41,13 @@
 }
 
 .line-chart-dropdown-btn {
-  padding: 8px 12px;
+  padding: 12px 30px;
+  font-size: 16px;
   border: 1px solid #ccc;
   background-color: #fff;
   cursor: pointer;
-  margin-left: 520px;
+  margin-left: 790px;
+  border-radius: 5px;
 }
 
 .line-chart-dropdown-content {
@@ -59,7 +61,7 @@
   overflow-y: auto;
   border: 1px solid #ccc;
   border-top: none;
-  margin-left: 395px;
+  margin-left: 700px;
 }
 
 .line-chart-dropdown-content label {

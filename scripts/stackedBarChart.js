@@ -1,11 +1,11 @@
-// StackedBarChart.js
+import { mouseoverHandler, mouseoutHandler } from './helper.js';
+
 export default class StackedBarChart {
   constructor(svgSelector) {
     this.svgSelector = svgSelector;
   }
 
   renderStackedBarChart(data) {
-
     console.log('Stacked bar chart data:', data);
 
     // Correct keys based on your data structure
@@ -14,10 +14,13 @@ export default class StackedBarChart {
       'Plug-in Hybrid Electric Vehicle (PHEV)',
     ];
 
+    const container = d3.select('#stacked-bar-chart-container');
+    const containerWidth = container.node().getBoundingClientRect().width;
+
     // Dimensions and margins
     const margin = { top: 20, right: 20, bottom: 40, left: 50 };
-    const width = 700 - margin.left - margin.right;
-    const height = 550 - margin.top - margin.bottom;
+    const width = containerWidth - 5;
+    const height = 580 - margin.top - margin.bottom;
 
     // Scales
     const xScale = d3
@@ -31,27 +34,30 @@ export default class StackedBarChart {
       .rangeRound([height, 0])
       .domain([0, d3.max(data, (d) => d[keys[0]] + d[keys[1]])]);
 
+    const yAxis = d3.axisLeft(yScale);
+
     const colorScale = d3
       .scaleOrdinal()
       .domain(keys)
       .range(['#f5a067', '#5E3FBE']);
 
-    // Clear any existing SVG
     d3.select(this.svgSelector).selectAll('*').remove();
 
-    // Append the SVG object to the body of the page
     const svg = d3
       .select(this.svgSelector)
-      .attr('width', width + margin.left + margin.right)
+      .attr('width', '100%')
       .attr('height', height + margin.top + margin.bottom)
+      .attr(
+        'viewBox',
+        `0 0 ${containerWidth} ${height + margin.top + margin.bottom}`
+      )
+      .attr('preserveAspectRatio', 'xMinYMin meet')
+      .style('display', 'block')
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     // Stack the data
     const stackedData = d3.stack().keys(keys)(data);
-
-    const yAxis = d3.axisLeft(yScale);
-    const yAxisGrp = svg.append('g').call(yAxis);
 
     // Create the bars
     svg
@@ -74,13 +80,16 @@ export default class StackedBarChart {
       .attr('y', (d) => yScale(d[1]))
       .attr('height', (d) => yScale(d[0]) - yScale(d[1]));
 
+    // Applying the x and y axis
     const xAxisGroup = svg
       .append('g')
       .attr('transform', `translate(0,${height})`)
       .call(d3.axisBottom(xScale));
 
     xAxisGroup.select('.domain').attr('display', 'none');
-    // xAxisGroup.selectAll('.tick line').attr('display', 'none');
+
+    const yAxisGroup = svg.append('g').call(yAxis);
+    yAxisGroup.select('.domain').attr('display', 'none');
 
     // Add a tooltip
     const tooltip = d3
@@ -96,24 +105,12 @@ export default class StackedBarChart {
       .style('box-shadow', '0 2px 2px rgba(0, 0, 0, 0.1)')
       .style('pointer-events', 'none');
 
-    // Tooltip mouseover event handler
-    const mouseover = (event, d) => {
-      tooltip.transition().duration(200).style('opacity', 0.9);
-      tooltip
-        // TODO: Name not consistent
-        .html(`${d[0] ? keys[0] : keys[1]}<br/>${d.data.year}: ${d[1] - d[0]}`)
-        .style('left', `${event.pageX}px`)
-        .style('top', `${event.pageY - 28}px`);
-    };
+    const content = (d) =>
+      `${d[0] ? keys[1] : keys[0]}<br/>${d.data.year}: ${d[1] - d[0]}`;
 
-    // Tooltip mouseout event handler
-    const mouseout = () => {
-      tooltip.transition().duration(500).style('opacity', 0);
-    };
-
-    yAxisGrp.select('.domain').attr('display', 'none');
-
-    // Add event listeners for the tooltip
-    svg.selectAll('rect').on('mouseover', mouseover).on('mouseout', mouseout);
+    svg
+      .selectAll('rect')
+      .on('mouseover', mouseoverHandler(tooltip, content, 0.85))
+      .on('mouseout', mouseoutHandler(tooltip));
   }
 }

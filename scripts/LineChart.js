@@ -1,31 +1,8 @@
+import { getCheckedCarMakes } from './helper.js';
+
 export default class LineChart {
   constructor(svgSelector) {
     this.svgSelector = svgSelector;
-  }
-
-  populateDropdown(data) {
-    const makes = Array.from(new Set(data.map((d) => d.Make)));
-    const dropdown = d3.select('#lc-dropdown-content');
-
-    makes.forEach((make) => {
-      const label = dropdown.append('label');
-
-      label
-        .append('input')
-        .attr('type', 'checkbox')
-        .attr('checked', true)
-        .attr('value', make)
-        .on('change', () => this.updateChart(data));
-
-      label.append('span').text(make);
-    });
-  }
-
-  getCheckedMakes() {
-    return d3
-      .selectAll("#lc-dropdown-content input[type='checkbox']:checked")
-      .nodes()
-      .map((el) => el.value);
   }
 
   transformData(filteredData) {
@@ -48,7 +25,10 @@ export default class LineChart {
   }
 
   updateChart(originalData) {
-    const checkedMakes = this.getCheckedMakes();
+    const checkedMakes = getCheckedCarMakes(
+      originalData,
+      'lc-dropdown-content'
+    );
 
     const filteredData = originalData.filter((d) =>
       checkedMakes.includes(d.Make)
@@ -111,7 +91,7 @@ export default class LineChart {
     }
 
     const generateLegend = () => {
-      const legendContainer = d3.select('.legend-line').style('width', '900px'); // Set the width as per your requirement;
+      const legendContainer = d3.select('.legend-line').style('width', '900px');
 
       legendContainer.selectAll('.legend-row-line').remove();
 
@@ -213,7 +193,7 @@ export default class LineChart {
       .style('width', '120px')
       .style('height', '28px')
       .style('padding', '2px')
-      .style('font', '12px sans-serif')
+      .style('font-size', '12px')
       .style('background', 'lightsteelblue')
       .style('border', '0px')
       .style('border-radius', '8px')
@@ -236,15 +216,16 @@ export default class LineChart {
         .attr('cy', (d) => yScale(d.count))
         .attr('fill', (d) => colorScale(makeData.make))
         .on('mouseover', (event, d) => {
+          const scale = 0.85;
           tooltip
             .transition()
             .duration(200)
             .style('opacity', 0.9)
             .style('background-color', colorScale(d.make));
           tooltip
-            .html(`${d.make}<br/>${d.year} : ${d.count} cars`)
-            .style('left', event.pageX + 'px')
-            .style('top', event.pageY - 28 + 'px');
+            .html(`${d.make}<br/>${d.year}: ${d.count} cars`)
+            .style('left', event.pageX / scale + 'px')
+            .style('top', event.pageY / scale - 28 + 'px');
         })
         .on('mouseout', mouseout);
     });

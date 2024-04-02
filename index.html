@@ -10,11 +10,15 @@
     <link rel="stylesheet" href="styles/main.css" />
   </head>
   <body>
-    <h1>F20DV Coursework - Group 10</h1>
     <section class="dashboard">
+      <h1>Electric Vehicle Trends</h1>
       <div class="search-box">
         <div class="search">
-          <input type="text" placeholder="Search for a Manufacturer" />
+          <input
+            class="search-input"
+            type="text"
+            placeholder="Search for a Manufacturer"
+          />
         </div>
       </div>
     </section>
@@ -28,9 +32,9 @@
               <h3>Total Number of Sold Cars</h3>
               <p>To the nearest 100</p>
             </div>
-            <div class="bar-chart-dropdown" id="bc-dropdown">
+            <div class="bar-chart-dropdown" id="bc-dropdown-content">
               <button class="bar-chart-dropdown-btn">Filter</button>
-              <div class="bar-chart-dropdown-content" id="bc2-dropdown"></div>
+              <div class="bar-chart-dropdown-content"></div>
             </div>
           </div>
           <svg id="bar-chart"></svg>
@@ -100,9 +104,9 @@
           </div>
 
           <!-- Dropdown for filtering manufacturers -->
-          <div class="line-chart-dropdown">
+          <div class="line-chart-dropdown" id="lc-dropdown-content">
             <button class="line-chart-dropdown-btn">Filter</button>
-            <div id="lc-dropdown-content" class="line-chart-dropdown-content">
+            <div class="line-chart-dropdown-content">
               <!-- Checkboxes will be added here by JavaScript -->
             </div>
           </div>
@@ -117,48 +121,47 @@
         </div>
 
         <!-- c5 (Change the name to match the rest of the containers) -->
-        <div class="card-5">
-          <div class="grouped-bar-chart">
-            <div class="headings">
-              <h3>Distribution of Clean Alternate Fuel</h3>
-              <p>Trends over the years</p>
-            </div>
-            <svg id="grouped-chart">hi</svg>
-            <div class="legend-stackedbar">
+        <div id="grouped-bar-chart-container">
+          <div class="headings">
+            <h3>Distribution of Clean Alternate Fuel</h3>
+            <p>Trends over the years</p>
+          </div>
+          <svg id="grouped-chart"></svg>
+          <div class="legend-stackedbar">
+            <div class="legend-item-stackedbar">
+              <div>
+                <span class="legend-dot-stackedbar" style="color: #f5a067"
+                  >&#11044;</span
+                >
+                <span class="legend-text-stackedbar"
+                  >Unkown Eligibility: Battery Range Not Researched</span
+                >
+              </div>
               <div class="legend-item-stackedbar">
-                <div>
-                  <span class="legend-dot-stackedbar" style="color: #f5a067"
-                    >&#11044;</span
-                  >
-                  <span class="legend-text-stackedbar"
-                    >Unkown Eligibility: Battery Range Not Researched</span
-                  >
-                </div>
-                <div class="legend-item-stackedbar">
-                  <span class="legend-dot-stackedbar" style="color: #5e3fbe"
-                    >&#11044;</span
-                  >
-                  <span class="legend-text-stackedbar"
-                    >Clean Alternative Fuel Vehicle Eligible</span
-                  >
-                </div>
+                <span class="legend-dot-stackedbar" style="color: #5e3fbe"
+                  >&#11044;</span
+                >
+                <span class="legend-text-stackedbar"
+                  >Clean Alternative Fuel Vehicle Eligible</span
+                >
               </div>
             </div>
           </div>
         </div>
 
         <!-- c6 (Change the name to match the rest of the containers) -->
+        <!-- <div class="card-5"></div> -->
         <div class="card-6"></div>
+        <!-- <div class="card-7"></div> -->
         <!-- c7 (Change the name to match the rest of the containers) -->
-        <div class="card-7"></div>
+        <!-- <div class="card-7"></div> -->
         <!-- c8 (Change the name to match the rest of the containers) -->
-        <div class="card-8">
-          <div id="scatter-plot-container">
-            <div class="headings">
-              <h3>Average Electric Range Per Year</h3>
-              <p>Trends over the years</p>
-            </div>
-            <svg id="scatter-plot"></svg>
+        <div id="scatter-plot-container">
+          <div class="headings">
+            <h3>Average Electric Range Per Year</h3>
+            <p>Trends over the years</p>
+          </div>
+          <svg id="scatter-plot"></svg>
         </div>
       </main>
     </div>

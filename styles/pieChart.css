@@ -16,7 +16,6 @@
   align-items: center;
   margin-left: 20px;
   padding-top: 80px;
-
 }
 
 .legend-item-pie {
@@ -31,5 +30,5 @@
 
 .legend-text-pie {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
 }
