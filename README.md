@@ -12,7 +12,9 @@
   <!-- JavaScript -->
   <img alt="JavaScript" title="JavaScript" src="https://img.shields.io/badge/JavaScript-informational?style=flat-sqaure&logo=javascript&logoColor=black&color=F7DF1E">
   <!-- D3.js -->
-  <img alt="D3.js" title="JavaScript library for data visualization" src="https://img.shields.io/badge/D3.js-informational?style=flat-sqaure&logo=d3.js&logoColor=white&color=F9A03C">
+  <a href="https://d3js.org/">
+    <img alt="D3.js" title="JavaScript library for data visualization" src="https://img.shields.io/badge/D3.js-informational?style=flat-sqaure&logo=d3.js&logoColor=white&color=F9A03C">
+  </a>
 </div>
 
 ---
@@ -34,7 +36,7 @@ Team Members:
 
 ## Architecture
 
-The application is a data visualization dashboard for electric vehicle data. It uses D3.js for creating various types of charts and vanilla JavaScript for data processing and event handling.<br>
+The application is a data visualization dashboard for electric vehicle data. It uses [D3.js](https://d3js.org/) for creating various types of charts and vanilla JavaScript for data processing and event handling.<br>
 The application is styled using CSS and the layout is created using HTML.
 
 The project is structured as follows:
