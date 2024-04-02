@@ -82,7 +82,7 @@ The project is structured as follows:
 
 ### Data Processing
 
-The CSV data is loaded and processed in `main.js` via the `d3.csv()` function.
+The CSV data is loaded and processed in `main.js` via the [`d3.csv()`](https://d3js.org/d3-fetch#csv) function.
 
 The data processing functions transform the raw data into a format suitable for each type of chart.<br>
 The processed data is then passed to the corresponding chart's render function.
