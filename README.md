@@ -1,4 +1,13 @@
-# F20DV Group Project Template
+# F20DV Group Project
+
+## Group 10
+
+### Group Members
+
+- Abdul Rehman - @ar225
+- Ahmed ElZubair - @ae87
+- Chandrashekhar Ramaprasad  @cr2007
+- Tamir Forawi - @tf2008
 
 This starter project contains a basic web application template for your group project.
 
