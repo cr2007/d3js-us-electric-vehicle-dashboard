@@ -34,6 +34,13 @@ Team Members:
 
 ---
 
+## Introduction
+
+As part of our university coursework, we were tasked with designing and developing an interactive visualization application for the dataset of our choice, using HTML, CSS, JavaScript, and the [D3.js](https://d3js.org/) library.
+
+The dataset we chose for this project is the [Electric Vehicles Population Dataset](https://www.kaggle.com/datasets/yashusinghal/electric-vehicle-population-dataset), a publicly available Kaggle dataset that contains information about electric vehicles (EVs) in the United States of America (USA).<br>
+It includes data such as the Make, Model, State, Electric Vehicle Type, and the Electric Range of the vehicles.
+
 ## Architecture
 
 The application is a data visualization dashboard for electric vehicle data. It uses [D3.js](https://d3js.org/) for creating various types of charts and vanilla JavaScript for data processing and event handling.<br>
