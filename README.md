@@ -56,6 +56,10 @@ It includes data such as the Make, Model, State, Electric Vehicle Type, and the 
 
 ## Architecture
 
+<div align="center">
+  <img src="images/Application_Architecture.png" width="60%"/>
+</div>
+
 The application is a data visualization dashboard for electric vehicle data. It uses [D3.js](https://d3js.org/) for creating various types of charts and vanilla JavaScript for data processing and event handling.<br>
 The application is styled using CSS and the layout is created using HTML.
 
