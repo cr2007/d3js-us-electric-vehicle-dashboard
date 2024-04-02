@@ -62,3 +62,10 @@ The project is structured as follows:
 - [`index.html`](./index.html): The main HTML file that includes the D3.js library, the main CSS file and placeholders for the charts
 
 ---
+
+### Data Processing
+
+The CSV data is loaded and processed in `main.js` via the `d3.csv()` function.
+
+The data processing functions transform the raw data into a format suitable for each type of chart.<br>
+The processed data is then passed to the corresponding chart's render function.
