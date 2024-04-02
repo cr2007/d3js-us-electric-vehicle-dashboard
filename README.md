@@ -82,3 +82,13 @@ When the user types in the search input field, the data is filtered based on the
 Each chart is implemented as a class in its own JavaScript file.
 
 The classes include a `render` function that takes the processed data and generates the chart.
+
+### Styling
+
+The application is styled using CSS. The [main CSS file](./styles/main.css) includes styles for the overall layout and imports the CSS files for each type of chart.
+
+### HTML Structure
+
+The [main HTML file](./index.html) includes the D3.js library, the main CSS file, and placeholders for the charts.
+
+The placeholders are `div` elements with specific IDs corresponding to each type of chart.
