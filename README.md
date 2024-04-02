@@ -69,3 +69,10 @@ The CSV data is loaded and processed in `main.js` via the `d3.csv()` function.
 
 The data processing functions transform the raw data into a format suitable for each type of chart.<br>
 The processed data is then passed to the corresponding chart's render function.
+
+### Event Handling
+
+The event handling is also done in the [`main.js`](./scripts/main.js) file.
+
+For example, it includes an event listener for the search input field.<br>
+When the user types in the search input field, the data is filtered based on the search query and the charts are updated accordingly.
