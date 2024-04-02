@@ -76,3 +76,9 @@ The event handling is also done in the [`main.js`](./scripts/main.js) file.
 
 For example, it includes an event listener for the search input field.<br>
 When the user types in the search input field, the data is filtered based on the search query and the charts are updated accordingly.
+
+### Charts
+
+Each chart is implemented as a class in its own JavaScript file.
+
+The classes include a `render` function that takes the processed data and generates the chart.
