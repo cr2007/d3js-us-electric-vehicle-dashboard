@@ -3,6 +3,18 @@
 ## Course: Data Visualisation and Analytics ([F20DV](https://curriculum.hw.ac.uk/coursedetails/F20DV?termcode=202324))
 
 ## Interactive Visualization Dashboard
+
+<div align="center">
+  <!-- HTML -->
+  <img alt="HTML" title="HyperText Markup Language" src="https://img.shields.io/badge/HTML-informational?style=flat-sqaure&logo=html5&logoColor=white&color=E34F26">
+  <!-- CSS -->
+  <img alt="CSS" title="Cascading Style Sheets" src="https://img.shields.io/badge/CSS-informational?style=flat-sqaure&logo=css3&logoColor=white&color=1572B6">
+  <!-- JavaScript -->
+  <img alt="JavaScript" title="JavaScript" src="https://img.shields.io/badge/JavaScript-informational?style=flat-sqaure&logo=javascript&logoColor=black&color=F7DF1E">
+  <!-- D3.js -->
+  <img alt="D3.js" title="JavaScript library for data visualization" src="https://img.shields.io/badge/D3.js-informational?style=flat-sqaure&logo=d3.js&logoColor=white&color=F9A03C">
+</div>
+
 ### Group 10
 
 Team Members:
@@ -11,13 +23,6 @@ Team Members:
 - Chandrashekhar Ramaprasad  @cr2007
 - Tamir Forawi - @tf2008
 
-This starter project contains a basic web application template for your group project.
-
-To do list:
-
-- [ ] One group member forks this project.
-- [ ] That same group member invites others to collaborate.
-- [ ] Each group member sets up their access to GitLab: SSH keygen; clone repo; configuration git user.email
 
 ## Tasks
 
