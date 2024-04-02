@@ -31,3 +31,23 @@ Team Members:
 
 
 ---
+
+## Architecture
+
+The application is a data visualization dashboard for electric vehicle data. It uses D3.js for creating various types of charts and vanilla JavaScript for data processing and event handling.<br>
+The application is styled using CSS and the layout is created using HTML.
+
+The project is structured as follows:
+
+- [`data/`](./data/): Constains the [CSV data file](./data/Electric_Vehicle_Population_Data_Cleaned.csv) used for generating the charts.
+- [`lib/`](./lib/): Contains the D3.js library file [`d3.v7.min.js`](./lib/d3/d3.v7.min.js)
+- [`scripts/`](scripts/): Constains JavaScript file s for each type of chart, connected by the main script file:
+  - [`main.js`](./scripts/main.js): Handles data loading, processing, and event handling
+  - [`barChart.js`](./scripts/barChart.js): Implements the Bar Chart
+  - [`pieChart.js`](./scripts/pieChart.js): Implements the Pie Chart
+  - [`stackedBarChart.js`](./scripts/stackedBarChart.js): Implements the Stacked Bar Chart
+- [`styles/`](./styles/): Contains CSS files for each type of chart and the [main CSS file](./styles/main.css):
+  - [`main.css`](./styles/main.css): Contains the main style and imports other CSS files
+- [`index.html`](./index.html): The main HTML file that includes the D3.js library, the main CSS file and placeholders for the charts
+
+---
