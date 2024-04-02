@@ -1,7 +1,10 @@
+<!-- omit from toc -->
 # F20DV Group Project
 
+<!-- omit from toc -->
 ## Course: Data Visualisation and Analytics ([F20DV](https://curriculum.hw.ac.uk/coursedetails/F20DV?termcode=202324))
 
+<!-- omit from toc -->
 ## Interactive Visualization Dashboard
 
 <div align="center">
@@ -19,18 +22,28 @@
 
 ---
 
+<!-- omit from toc -->
 ### Group 10
 
 Team Members:
 - Abdul Rehman - @ar225
 - Ahmed ElZubair - @ae87
-- Chandrashekhar Ramaprasad  @cr2007
+- Chandrashekhar Ramaprasad - @cr2007
 - Tamir Forawi - @tf2008
 
 ---
 
+<!-- omit from toc -->
 ## Index
 
+- [Introduction](#introduction)
+- [Architecture](#architecture)
+  - [Directory Structure](#directory-structure)
+  - [Data Processing](#data-processing)
+  - [Event Handling](#event-handling)
+  - [Charts](#charts)
+  - [Styling](#styling)
+  - [HTML Structure](#html-structure)
 
 ---
 
