@@ -46,6 +46,8 @@ It includes data such as the Make, Model, State, Electric Vehicle Type, and the 
 The application is a data visualization dashboard for electric vehicle data. It uses [D3.js](https://d3js.org/) for creating various types of charts and vanilla JavaScript for data processing and event handling.<br>
 The application is styled using CSS and the layout is created using HTML.
 
+### Directory Structure
+
 The project is structured as follows:
 
 - [`data/`](./data/): Constains the [CSV data file](./data/Electric_Vehicle_Population_Data_Cleaned.csv) used for generating the charts.
