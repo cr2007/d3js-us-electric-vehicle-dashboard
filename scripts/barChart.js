@@ -58,8 +58,8 @@ export default class BarChart {
     const width = containerWidth - 50;
     const height = 500;
     const margin = { top: 10, right: 10, bottom: 30, left: 45 };
-    const chartWidth = width - margin.left - margin.right;
-    const chartHeight = height - margin.top - margin.bottom;
+    const barChartWidth = width - margin.left - margin.right;
+    const barChartHeight = height - margin.top - margin.bottom;
 
     // Reset the chart every time a search is being made
     d3.select('#bar-chart').selectAll('*').remove();
@@ -86,7 +86,7 @@ export default class BarChart {
     const xScale = d3
       .scaleBand()
       .domain(counts.map((d) => d[property]))
-      .range([0, chartWidth])
+      .range([0, barChartWidth])
       .padding(0.15);
 
     const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
@@ -94,7 +94,7 @@ export default class BarChart {
     const xAxisGroup = barChart
       .append('g')
       .attr('class', 'x-axis')
-      .attr('transform', `translate(0,${chartHeight})`)
+      .attr('transform', `translate(0,${barChartHeight})`)
       .call(xAxis);
 
     // Removing the defaulted lines for a better visual
@@ -110,7 +110,7 @@ export default class BarChart {
       .scaleLinear()
       .domain([0, d3.max(counts, (d) => d.count)])
       .nice()
-      .range([chartHeight, 0]);
+      .range([barChartHeight, 0]);
 
     // Y-axis counts
     const yAxisGrp = barChart
@@ -144,7 +144,7 @@ export default class BarChart {
       .append('rect')
       .attr('class', 'bar')
       .attr('x', (d) => xScale(d[property]))
-      .attr('y', chartHeight)
+      .attr('y', barChartHeight)
       .attr('width', xScale.bandwidth())
       .attr('height', 0)
       .on('mouseover', mouseoverHandler(tooltip, content, 0.85))
@@ -152,13 +152,13 @@ export default class BarChart {
       .transition()
       .duration(800)
       .attr('y', (d) => yScale(d.count))
-      .attr('height', (d) => chartHeight - yScale(d.count));
+      .attr('height', (d) => barChartHeight - yScale(d.count));
 
     // Responsible for applying zoom to the chart
     function zoom(svg) {
       const extent = [
         [margin.left, margin.top],
-        [chartWidth, height - margin.top],
+        [barChartWidth, height - margin.top],
       ];
 
       svg.call(
@@ -169,7 +169,7 @@ export default class BarChart {
           .extent(extent)
           .on('zoom', (event) => {
             xScale.range(
-              [10, chartWidth].map((d) => event.transform.applyX(d))
+              [10, barChartWidth].map((d) => event.transform.applyX(d))
             );
 
             svg
@@ -177,7 +177,7 @@ export default class BarChart {
               .attr('x', (d) => xScale(displayModels ? d.model : d.make))
               .attr('width', xScale.bandwidth())
               .attr('y', (d) => yScale(d.count))
-              .attr('height', (d) => chartHeight - yScale(d.count));
+              .attr('height', (d) => barChartHeight - yScale(d.count));
 
             svg.selectAll('.x-axis').call(xAxis);
 

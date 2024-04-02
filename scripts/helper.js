@@ -3,7 +3,7 @@ export const mouseoverHandler =
   (tooltip, getContent, scale = 0.85) =>
   (event, d) => {
     tooltip.transition().duration(200).style('opacity', 0.9);
-    const content = getContent(d); // Call getContent with the current data point
+    const content = getContent(d);
 
     tooltip
       .html(content)
