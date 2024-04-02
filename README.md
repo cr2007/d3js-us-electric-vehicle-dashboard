@@ -1,9 +1,11 @@
 # F20DV Group Project
 
-## Group 10
+## Course: Data Visualisation and Analytics ([F20DV](https://curriculum.hw.ac.uk/coursedetails/F20DV?termcode=202324))
 
-### Group Members
+## Interactive Visualization Dashboard
+### Group 10
 
+Team Members:
 - Abdul Rehman - @ar225
 - Ahmed ElZubair - @ae87
 - Chandrashekhar Ramaprasad  @cr2007
