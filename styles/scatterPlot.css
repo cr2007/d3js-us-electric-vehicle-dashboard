@@ -1,0 +1,37 @@
+/* c8 */
+#scatter-plot-container {
+  grid-area: c7;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* div.scatter-plot {
+
+  } */
+
+/* svg.scatterplot {
+    fill: #3f94d3;
+    stroke: #003c71;
+    stroke-width: 2px;
+    border: 1px solid #121212;
+  } */
+
+text {
+  font-family: sans-serif;
+  font-size: 12px;
+  fill: #121212;
+  stroke: none;
+}
+
+/* @media (prefers-color-scheme: dark) {
+    svg.scatterplot {
+      fill: #52aeff;
+      stroke: #fbfaf2;
+      stroke-width: 1px;
+      border: 1px solid #fbfaf2;
+    }
+
+    svg.scatterplot text {
+      fill: #fbfaf2;
+    }
+  } */

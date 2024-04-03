@@ -1,32 +1,44 @@
-/* c4 */
-#line-chart-container {
-  grid-area: c4;
+/* c5 */
+#grouped-bar-chart-container {
+  grid-area: c5;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
 
-.legend-row-line {
+.grouped-bar-chart-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.grouped-bar-chart-svg {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+}
+
+.grouped-bar-chart-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 10px;
 }
 
-.legend-item-line {
+.grouped-bar-chart-legend-item {
   display: flex;
   align-items: center;
   margin-left: 10px;
   width: 110px;
 }
 
-.legend-dot-line {
+.grouped-bar-chart-legend-dot {
   margin-right: 5px;
   display: inline-block;
   text-align: center;
 }
 
-.legend-text-line {
+.grouped-bar-chart-legend-text {
   font-size: 12px;
   margin-right: 10px;
   white-space: nowrap;
@@ -36,21 +48,19 @@
   max-width: 110px;
 }
 
-.line-chart-dropdown {
+.grouped-bar-chart-dropdown {
   position: relative;
 }
 
-.line-chart-dropdown-btn {
-  padding: 12px 30px;
-  font-size: 16px;
+.grouped-bar-chart-dropdown-btn {
+  padding: 8px 12px;
   border: 1px solid #ccc;
   background-color: #fff;
   cursor: pointer;
-  margin-left: 790px;
-  border-radius: 5px;
+  margin-left: 520px;
 }
 
-.line-chart-dropdown-content {
+.grouped-bar-chart-dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
@@ -61,30 +71,12 @@
   overflow-y: auto;
   border: 1px solid #ccc;
   border-top: none;
-  margin-left: 700px;
+  margin-left: 395px;
 }
 
-.line-chart-dropdown-content label {
-  display: block;
-  padding: 5px 10px;
-  clear: both;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-.line-chart-dropdown-content input[type='checkbox'] {
-  margin-right: 5px;
-  accent-color: #5e3fbe;
-}
-
-.line-chart-dropdown-content label:hover {
-  background-color: #f1f1f1;
-}
-
-.line-chart-dropdown:hover .line-chart-dropdown-content {
-  display: block;
-}
-
-.line-chart-dropdown .show {
+.grouped-bar-chart-dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
   display: block;
 }

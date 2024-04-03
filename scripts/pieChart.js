@@ -5,8 +5,8 @@ export default class PieChart {
 
   createPieChart(data) {
     // Dimensions
-    const width = 400;
-    const height = 250;
+    const width = 600;
+    const height = 400;
     const radius = Math.min(width, height) / 2;
 
     // Reset the chart every time a search is being made
@@ -70,8 +70,9 @@ export default class PieChart {
       .text((d) => `${d.data.value.toFixed(1)}%`)
       .style('fill', (d) =>
         d.data.type === 'Battery Electric Vehicle (BEV)' ? '#black' : '#f4f0fd'
-      ).style('font-size', '16px')
-      .style('font-weight', 'bold');
+      )
+      .style('font-size', '26px')
+      .style('font-weight', '500');
 
     arcs.exit().remove();
   }

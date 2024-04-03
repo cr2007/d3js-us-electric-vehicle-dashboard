@@ -1,10 +1,8 @@
-/* c3 */
+/* c5 */
 #stacked-bar-chart-container {
   grid-area: c3;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  /* width: fit-content; */
-  /* height: fit-content; */
 }
 
 .legend-row-stackedbar {
@@ -16,11 +14,11 @@
 .legend-item-stackedbar {
   display: flex;
   align-items: center;
-  margin-right: 10px;
 }
 
 .legend-text-stackedbar {
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 400;
   margin-right: 10px;
 }
 
