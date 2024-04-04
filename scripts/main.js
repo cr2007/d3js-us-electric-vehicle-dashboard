@@ -11,18 +11,31 @@ import { populateDropdownContent } from './helper.js';
 
 console.log(`D3 loaded, version ${d3.version}`);
 
-// Loading data
+/**
+ * Asynchronously loads data from a CSV file using D3's csv function.
+ * Logs the loaded data to the console.
+ *
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of objects representing the loaded data.
+ * Each object corresponds to a row in the CSV file, and its properties correspond to the columns.
+ * @throws {Error} If there is an error loading the data, the function will log the error to the console and re-throw it.
+ */
 const loadData = async () => {
   try {
+    // Use D3's csv function to load the data from the CSV file
+    // This function returns a promise that resolves to an array of objects
     let data = await d3.csv(
       'data/Electric_Vehicle_Population_Data_Cleaned.csv'
     );
 
+    // Log the loaded data to the console
     console.log('Data loaded:', data);
 
-    return data;
+    return data; // Return the loaded data
   } catch (error) {
+    // If there is an error loading the data, log the error to the console
     console.error('Error loading data:', error);
+
+    // Re-throw the error so it can be caught and handled by the caller
     throw error;
   }
 };
