@@ -170,13 +170,25 @@ const processScatterData = (data, searchTerm) => {
   return structuredData;
 };
 
+/**
+ * Processes the provided data to structure it for a grouped bar chart.
+ *
+ * Filters the data based on a search term, groups the data by year and CAFV eligibility,
+ * and calculates the count of each group.
+ *
+ * @param {Array<Object>} data - The data to process. Each object should have a "Make", "Model Year", and "Clean Alternative Fuel Vehicle (CAFV) Eligibility" property.
+ * @param {string} searchTerm - The term to filter the data by. Only objects where the "Make" includes the search term will be included.
+ * @returns {Array<Object>} An array of objects where each object represents a year and contains an array of groups with their counts.
+ */
 const processDataForgroupedBarChart = (data, searchTerm) => {
+  // Filter the data based on the search term, if provided
   const filteredData = searchTerm
     ? data.filter((d) =>
         d.Make.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : data;
 
+  // Group the data by "Model Year" and "CAFV Eligibility", and calculate the count of each group
   const rolledUpData = d3.rollups(
     filteredData,
     (v) => v.length,
@@ -184,26 +196,33 @@ const processDataForgroupedBarChart = (data, searchTerm) => {
     (d) => d['Clean Alternative Fuel Vehicle (CAFV) Eligibility']
   );
 
+  // Structure the grouped data into an array of objects where each object represents a year and contains an array of groups with their counts
   const structuredDataArray = rolledUpData.map(([year, types]) => {
     const groups = types.map(([type, count]) => ({
       grp: type,
       count,
     }));
 
+    // Calculate the total count for the current year
     const ttl = groups.reduce((sum, group) => sum + group.count, 0);
 
+    // Return an object representing the year, groups, and total count
     return { year, groups, ttl };
   });
 
-  // Sort by year in ascending order
+  // Sort the data by year in ascending order
   structuredDataArray.sort((a, b) => b.year - a.year);
 
+  // Adapt the structure of the data to match the expected input format of the grouped bar chart
   const adaptedStructure = structuredDataArray.map(({ year: yr, groups }) => ({
     yr,
     groups: groups.map(({ grp, count }) => ({ grp, count })),
   }));
 
+  // Log the processed data to the console
   console.log('THIS IS SPARTA:', adaptedStructure);
+
+  // Return the processed data
   return adaptedStructure;
 };
 
