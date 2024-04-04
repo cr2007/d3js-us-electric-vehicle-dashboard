@@ -109,49 +109,51 @@ const processDataForStackedBarChart = (data, searchTerm) => {
 };
 
 /**
- * Processes the input data to structure it for a scatter plot.
- * The function calculates the sum of the "Electric Range" for each unique "Model Year".
+ * Processes the provided data to structure it for a scatter plot.
+ * Filters the data based on a search term, extracts unique years and electric ranges,
+ * and calculates the average electric range for each year.
  *
- * @param {Array} data - The input data, an array of objects where each object represents a car model.
- * @return {Array} An array of arrays where each sub-array contains a "Model Year" and the corresponding total "Electric Range".
+ * @param {Array<Object>} data - The data to process. Each object should have a "Make", "Model Year", and "Electric Range" property.
+ * @param {string} searchTerm - The term to filter the data by. Only objects where the "Make" includes the search term will be included.
+ * @returns {Array<Array<number>>} An array of arrays where each sub-array represents a data point in the format [year, averageElectricRange].
  */
 const processScatterData = (data, searchTerm) => {
+  // Filter the data based on the search term, if provided
   const filteredData = searchTerm
     ? data.filter((d) =>
         d.Make.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : data;
 
-  // Map through the data and extract the "Model Year" from each object
-  // Use Set to remove duplicates, then convert back to an array
-  // Sort the array in ascending order
+  // Extract the unique "Model Year" values from the filtered data and sort them in ascending order
   const years = Array.from(
     new Set(filteredData.map((d) => d['Model Year']))
   ).sort(d3.ascending);
 
-  // Map through the data and extract the "Electric Range" from each object
-  // Use Set to remove duplicates, then convert back to an array
-  // Sort the array in ascending order
+  // Extract the unique "Electric Range" values from the filtered data and sort them in ascending order
   const range = Array.from(
     new Set(filteredData.map((d) => d['Electric Range']))
   ).sort(d3.ascending);
 
-  // console.log('RANGE: ', range);
-
-  // Map through the unique years
-  // For each year, filter the data to get objects with that year
-  // Reduce the filtered data to get the sum of "Electric Range"
-  // Return an array with the year and the sum
+  // For each unique year, calculate the average "Electric Range" for that year
   const structuredData = years.map((year) => {
+    // Filter the data to get the objects for the current year
     const yearData = filteredData.filter((d) => d['Model Year'] === year);
+
+    // Calculate the sum of the "Electric Range" values for the current year
     const sum = yearData.reduce(
       (acc, curr) => acc + parseInt(curr['Electric Range']),
       0
     );
+
+    // Calculate the average "Electric Range" for the current year
     const average = sum / yearData.length;
+
+    // Return the year and the average as a data point
     return [year, average];
   });
 
+  // Return the structured data
   return structuredData;
 };
 
