@@ -39,7 +39,21 @@ const loadData = async () => {
     throw error;
   }
 };
+async function loadDataAndRenderMap(coordinatesData) {
+  console.log("Loading map data ")
+    let topojsonData = await d3.json('data/countries-50m.topo.json');
+    let countries = topojson.feature(topojsonData, topojsonData.objects.countries);
 
+    let map = new Map('#map-chart', 1000, 600);
+
+    let points = coordinatesData.map(d => [
+        +d.Longitude,
+        +d.Latitude,
+    ]);
+
+    map.baseMap(countries, d3.geoCylindricalStereographic)
+        .renderPoints(points);
+}
 // Charts
 const barChart = new BarChart('#bar-chart');
 const pieChart = new PieChart('#pie-chart');
@@ -65,7 +79,7 @@ const handleSearch = (event) => {
         lineChart.renderLineChart(processDataForLineChart(data));
         groupedChart.renderGroupedBarChart(processDataForgroupedBarChart(data));
         scatterPlot.render(processScatterData(data));
-
+        loadDataAndRenderMap(data);
         // Otherwise, filter the data based on the search input
       } else {
         const modelCounts = barChart.filterCarModel(data, searchInput);
@@ -80,6 +94,7 @@ const handleSearch = (event) => {
           processDataForgroupedBarChart(data, searchInput)
         );
         scatterPlot.render(processScatterData(data, searchInput));
+        loadDataAndRenderMap(data);
       }
     });
   }
@@ -282,7 +297,7 @@ loadData().then((data) => {
   groupedChart.renderGroupedBarChart(processedGroupedData);
   scatterPlot.render(processedScatterData);
   lineChart.renderLineChart(processedLineData);
-
+  loadDataAndRenderMap(data);
   populateDropdownContent({
     data,
     columnName: 'Make',
