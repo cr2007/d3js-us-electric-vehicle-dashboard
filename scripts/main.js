@@ -98,6 +98,7 @@ document
   .querySelector('.search input')
   .addEventListener('keydown', handleSearch);
 
+
 const processDataForStackedBarChart = (data, searchTerm) => {
   const filteredData = searchTerm
     ? data.filter((d) =>
@@ -129,6 +130,7 @@ const processDataForStackedBarChart = (data, searchTerm) => {
 
   return structuredData;
 };
+
 
 /**
  * Processes the provided data to structure it for a scatter plot.
@@ -179,6 +181,7 @@ const processScatterData = (data, searchTerm) => {
   return structuredData;
 };
 
+
 /**
  * Processes the provided data to structure it for a grouped bar chart.
  *
@@ -205,8 +208,15 @@ const processDataForgroupedBarChart = (data, searchTerm) => {
     (d) => d['Clean Alternative Fuel Vehicle (CAFV) Eligibility']
   );
 
-  // Structure the grouped data into an array of objects where each object represents a year and contains an array of groups with their counts
+  /**
+   * Transforms the rolled up data into a structured data array.
+   * Each element of the array represents a year, with an array of groups (types) and their counts, and the total count for the year.
+   *
+   * @param {Array} rolledUpData - The rolled up data to transform. Each element is an array where the first element is the year and the second element is an array of type-count pairs.
+   * @return {Array} The structured data array.
+   */
   const structuredDataArray = rolledUpData.map(([year, types]) => {
+    // Map each type-count pair to an object with 'grp' as the type and 'count' as the count
     const groups = types.map(([type, count]) => ({
       grp: type,
       count,
@@ -215,7 +225,7 @@ const processDataForgroupedBarChart = (data, searchTerm) => {
     // Calculate the total count for the current year
     const ttl = groups.reduce((sum, group) => sum + group.count, 0);
 
-    // Return an object representing the year, groups, and total count
+    // Return an object representing the year, groups, and total count for the year
     return { year, groups, ttl };
   });
 
