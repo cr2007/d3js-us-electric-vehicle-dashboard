@@ -1,12 +1,13 @@
-'use strict';
+'use strict'; // Enforce strict mode in JavaScript
 
-import BarChart from './barChart.js';
-import PieChart from './pieChart.js';
-import StackedBarChart from './stackedBarChart.js';
-import LineChart from './lineChart.js';
-import GroupedChart from './groupedChart.js';
-import ScatterPlot from './scatterPlot.js';
+import BarChart from './barChart.js';               // Import BarChart class
+import PieChart from './pieChart.js';               // Import PieChart class
+import StackedBarChart from './stackedBarChart.js'; // Import StackedBarChart class
+import LineChart from './lineChart.js';             // Import LineChart class
+import GroupedChart from './groupedChart.js';       // Import GroupedChart class
+import ScatterPlot from './scatterPlot.js';         // Import ScatterPlot class
 
+// Import the populateDropdownContent function from the helper.js module
 import { populateDropdownContent } from './helper.js';
 
 console.log(`D3 loaded, version ${d3.version}`);
