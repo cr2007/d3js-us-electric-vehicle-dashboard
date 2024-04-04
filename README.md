@@ -101,6 +101,7 @@ The project is structured as follows:
   - [`lineChart.js`](./scripts/lineChart.js): Implementation of the Line Chart
   - [`scatterPlot.js`](./scripts/scatterPlot.js): Implementation of the Scatter Plot
   - [`groupedChart.js`](./scripts/groupedChart.js): Implementation of the Grouped Bar Chart
+  - [`map.js`](./scripts/map.js): Implementation of the Map Chart
   - [`helper.js`](./scripts/helper.js): Reusable functions that have been used throughout the development of the charts
 - [`styles/`](./styles/): Contains CSS files for each type of chart and the [main CSS file](./styles/main.css):
   - [`main.css`](./styles/main.css): Contains the main style and imports other CSS files
