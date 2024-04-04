@@ -41,6 +41,7 @@ Team Members:
 ## Index
 
 - [Introduction](#introduction)
+- [Setup](#setup)
 - [Architecture](#architecture)
   - [Directory Structure](#directory-structure)
   - [Data Processing](#data-processing)
@@ -57,6 +58,25 @@ As part of our university coursework, we were tasked with designing and developi
 
 The dataset we chose for this project is the [Electric Vehicles Population Dataset](https://www.kaggle.com/datasets/yashusinghal/electric-vehicle-population-dataset), a publicly available Kaggle dataset that contains information about electric vehicles (EVs) in the United States of America (USA).<br>
 It includes data such as the Make, Model, State, Electric Vehicle Type, and the Electric Range of the vehicles.
+
+## Setup
+
+This setup guide is primarily for users of [Visual Studio Code](https://code.visualstudio.com/). If you're using a different code editor, ensure you have a local web server package like [XAMPP](https://www.apachefriends.org/) installed.
+
+Ensure the following are installed on your machine:
+
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Git](https://git-scm.com/)
+
+To set up the application:
+
+1. Clone the repository: `git clone https://gitlab-student.macs.hw.ac.uk/cr2007/f20dv-group-project`. Alternatively, download the ZIP file from the "Code" button.
+2. Open the project in Visual Studio Code.
+3. Install the recommended extensions in [`.vscode/extensions.json`](./.vscode/extensions.json). Ensure the Live Server extension is installed.
+4. Open `index.html` and click "**Go Live**" to run the application on a local server.
+5. The application will open in your default web browser at [`http://localhost:5500`](http://localhost:5500).
+6. Interact with the application and view the visualizations.
+7. Changes to the code will reflect in the browser in real-time.
 
 ## Architecture
 
