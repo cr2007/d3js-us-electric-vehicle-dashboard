@@ -3,6 +3,7 @@
 @import './stackedBarChart.css';
 @import './lineChart.css';
 @import './scatterPlot.css';
+@import "./map.css";
 
 * {
   color: #222;
@@ -88,20 +89,18 @@ h1 {
 
 .card-5 {
   grid-area: c5;
-  background-color: #783368;
   border-radius: 10px;
 }
+
 /* c6 */
 .card-6 {
   grid-area: c6;
-  background-color: #783368;
   border-radius: 10px;
 }
 
 /* c7 */
 .card-7 {
   grid-area: c7;
-  background-color: #783368;
   border-radius: 10px;
 }
 

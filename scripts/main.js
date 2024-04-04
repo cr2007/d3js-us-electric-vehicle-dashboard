@@ -1,12 +1,14 @@
-'use strict';
+'use strict'; // Enforce strict mode in JavaScript
 
-import BarChart from './barChart.js';
-import PieChart from './pieChart.js';
-import StackedBarChart from './stackedBarChart.js';
-import LineChart from './lineChart.js';
-import GroupedChart from './groupedChart.js';
-import ScatterPlot from './scatterPlot.js';
+import BarChart from './barChart.js';               // Import BarChart class
+import PieChart from './pieChart.js';               // Import PieChart class
+import StackedBarChart from './stackedBarChart.js'; // Import StackedBarChart class
+import LineChart from './lineChart.js';             // Import LineChart class
+import GroupedChart from './groupedChart.js';       // Import GroupedChart class
+import ScatterPlot from './scatterPlot.js';         // Import ScatterPlot class
+import Map from './map.js';                         // Import Map class
 
+// Import the populateDropdownContent function from the helper.js module
 import { populateDropdownContent } from './helper.js';
 
 console.log(`D3 loaded, version ${d3.version}`);
@@ -40,6 +42,50 @@ const loadData = async () => {
   }
 };
 
+async function loadDataAndRenderMap(coordinatesData) {
+
+  console.log("Loading map data ")
+  let topojsonData = await d3.json('data/countries-50m.topo.json');
+  let countries = topojson.feature(topojsonData, topojsonData.objects.countries);
+
+  // let map = new Map('#map-chart', 1000, 600);
+
+  let points = coordinatesData.map(d => [
+      +d.Longitude,
+      +d.Latitude,
+  ]);
+
+  map.baseMap(countries, d3.geoCylindricalStereographic);
+  map.renderPoints(points);
+}
+
+/**
+ * Filters the provided data based on a search term.
+ *
+ * @param {Array<Object>} data - The dataset to filter. Each object in the array represents an item with at least a "Make", "Longitude", and "Latitude" property.
+ * @param {string} searchTerm - The term to filter the data by. The function filters items where the "Make" property includes the search term.
+ * @returns {Array<Object>} - The filtered dataset, containing only items that match the search criteria.
+ */
+function filterDataBasedOnSearch(data, searchTerm) {
+  // If the search term is empty, return the original dataset
+  if (!searchTerm || searchTerm.trim() === '') {
+      return data;
+  }
+
+  // Convert the search term to lower case for case-insensitive comparison
+  const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+  // Filter the data based on whether the "Make" property includes the search term
+  const filteredData = data.filter(item => {
+      // Assume the searchable attribute is "Make". Adjust this if your data structure is different.
+      // Also, ensure the "Make" property exists and is a string before calling .toLowerCase()
+      return item.Make && item.Make.toLowerCase().includes(lowerCaseSearchTerm);
+  });
+
+  return filteredData;
+}
+
+
 // Charts
 const barChart = new BarChart('#bar-chart');
 const pieChart = new PieChart('#pie-chart');
@@ -47,29 +93,42 @@ const stackedBarChart = new StackedBarChart('#stacked-bar-chart');
 const lineChart = new LineChart('#line-chart');
 const groupedChart = new GroupedChart('#grouped-chart');
 const scatterPlot = new ScatterPlot('#scatter-plot');
+const map = new Map('#map-chart', 1000, 600);
 
-// Search functionality
+/**
+ * Handles the search functionality.
+ * When the "Enter" key is pressed, the function loads the data, filters it based on the search input, and renders the charts.
+ *
+ * @param {KeyboardEvent} event - The event object. The function checks the keyCode property to determine if the "Enter" key was pressed.
+ */
 const handleSearch = (event) => {
-  // Search via "Enter"
+  // Check if the "Enter" key was pressed
   if (event.keyCode === 13) {
+    // Get the value of the search input and trim any leading or trailing whitespace
     const searchInput = document.querySelector('.search input').value.trim();
 
+    // Load the data
     loadData().then((data) => {
-      // If search input is empty, render bar chart with the car makes only
+      // If the search input is empty, render the charts with the unfiltered data
       if (searchInput === '' || searchInput.length === 0) {
+
         barChart.renderBarChart(data, false);
         pieChart.renderPieChart(data);
-        stackedBarChart.renderStackedBarChart(
-          processDataForStackedBarChart(data)
-        );
+        stackedBarChart.renderStackedBarChart(processDataForStackedBarChart(data));
         lineChart.renderLineChart(processDataForLineChart(data));
         groupedChart.renderGroupedBarChart(processDataForgroupedBarChart(data));
         scatterPlot.render(processScatterData(data));
 
-        // Otherwise, filter the data based on the search input
+        const filteredData = filterDataBasedOnSearch(data, searchInput);
+        const processedMapData = processDataForMap(filteredData, searchInput);
+        loadDataAndRenderMap(processedMapData);
+
+      // If the search input is not empty, filter the data based on the search input and render the charts with the filtered data
       } else {
+        // Filter the data based on the search input
         const modelCounts = barChart.filterCarModel(data, searchInput);
 
+        // Render the charts with the filtered data
         barChart.renderBarChart(modelCounts, true);
         pieChart.renderPieChart(data, searchInput);
         lineChart.renderLineChart(processDataForLineChart(data), searchInput);
@@ -80,14 +139,20 @@ const handleSearch = (event) => {
           processDataForgroupedBarChart(data, searchInput)
         );
         scatterPlot.render(processScatterData(data, searchInput));
+        loadDataAndRenderMap(data);
       }
     });
   }
 };
 
+/**
+ * Adds a 'keydown' event listener to the search input field.
+ * When a key is pressed down in the search input field, the `handleSearch` function is called.
+ */
 document
-  .querySelector('.search input')
-  .addEventListener('keydown', handleSearch);
+  .querySelector('.search input') // Select the search input field
+  .addEventListener('keydown', handleSearch); // Add a 'keydown' event listener that calls the `handleSearch` function
+
 
 const processDataForStackedBarChart = (data, searchTerm) => {
   const filteredData = searchTerm
@@ -120,6 +185,7 @@ const processDataForStackedBarChart = (data, searchTerm) => {
 
   return structuredData;
 };
+
 
 /**
  * Processes the provided data to structure it for a scatter plot.
@@ -170,6 +236,31 @@ const processScatterData = (data, searchTerm) => {
   return structuredData;
 };
 
+
+const processDataForMap = (data, searchTerm) => {
+  const filteredData = searchTerm
+    ? data.filter(d => d.Make.toLowerCase().includes(searchTerm.toLowerCase()))
+    : data;
+
+  const groupedData = d3.rollups(
+    filteredData,
+    (v) => v.length,
+    (d) => `${d.Latitude},${d.Longitude}`
+  ).map(([location, count]) => {
+    const [latitude, longitude] = location.split(',').map(Number);
+    return {
+      latitude,
+      longitude,
+      count
+    };
+  });
+
+  console.log('Map data:', groupedData);
+
+  return groupedData;
+};
+
+
 /**
  * Processes the provided data to structure it for a grouped bar chart.
  *
@@ -196,8 +287,15 @@ const processDataForgroupedBarChart = (data, searchTerm) => {
     (d) => d['Clean Alternative Fuel Vehicle (CAFV) Eligibility']
   );
 
-  // Structure the grouped data into an array of objects where each object represents a year and contains an array of groups with their counts
+  /**
+   * Transforms the rolled up data into a structured data array.
+   * Each element of the array represents a year, with an array of groups (types) and their counts, and the total count for the year.
+   *
+   * @param {Array} rolledUpData - The rolled up data to transform. Each element is an array where the first element is the year and the second element is an array of type-count pairs.
+   * @return {Array} The structured data array.
+   */
   const structuredDataArray = rolledUpData.map(([year, types]) => {
+    // Map each type-count pair to an object with 'grp' as the type and 'count' as the count
     const groups = types.map(([type, count]) => ({
       grp: type,
       count,
@@ -206,7 +304,7 @@ const processDataForgroupedBarChart = (data, searchTerm) => {
     // Calculate the total count for the current year
     const ttl = groups.reduce((sum, group) => sum + group.count, 0);
 
-    // Return an object representing the year, groups, and total count
+    // Return an object representing the year, groups, and total count for the year
     return { year, groups, ttl };
   });
 
@@ -269,45 +367,74 @@ document
   .querySelector('.search input')
   .addEventListener('keydown', handleSearch);
 
-// Loading the defaulted data
+
+/**
+ * Loads the data and processes it for various charts. Then, renders the charts and populates the dropdown content.
+ *
+ * @returns {Promise} A promise that resolves when the data is loaded and the charts are rendered.
+ */
 loadData().then((data) => {
+  // Process the data for the stacked bar chart
   const processedStackedData = processDataForStackedBarChart(data);
+  // Process the data for the line chart
   const processedLineData = processDataForLineChart(data);
+  // Process the data for the grouped bar chart
   const processedGroupedData = processDataForgroupedBarChart(data);
+  // Process the data for the scatter plot
   const processedScatterData = processScatterData(data);
+  const processedMapData = processDataForMap(data);
+        loadDataAndRenderMap(processedMapData);
 
+  // Render the bar chart with the original data
   barChart.renderBarChart(data);
+  // Render the pie chart with the original data
   pieChart.renderPieChart(data);
+  // Render the stacked bar chart with the processed data
   stackedBarChart.renderStackedBarChart(processedStackedData);
+  // Render the grouped bar chart with the processed data
   groupedChart.renderGroupedBarChart(processedGroupedData);
+  // Render the scatter plot with the processed data
   scatterPlot.render(processedScatterData);
+  // Render the line chart with the processed data
   lineChart.renderLineChart(processedLineData);
+  loadDataAndRenderMap(data);
 
+  // Populate the dropdown content for the line chart
   populateDropdownContent({
     data,
     columnName: 'Make',
     dropdownId: 'lc-dropdown-content',
     dropdownContent: 'line-chart-dropdown-content',
+    // Update the line chart when the dropdown selection changes
     onChange: () => lineChart.updateChart(data),
   });
 
+  // Populate the dropdown content for the bar chart
   populateDropdownContent({
     data,
     columnName: 'Make',
     dropdownId: 'bc-dropdown-content',
     dropdownContent: 'bar-chart-dropdown-content',
+    // Render the bar chart when the dropdown selection changes
     onChange: () => barChart.renderBarChart(data, false),
   });
 });
 
+
+// Add an event listener to the button that toggles the bar chart dropdown
 document
-  .querySelector('.bar-chart-dropdown-btn')
-  .addEventListener('click', (event) => {
+  .querySelector('.bar-chart-dropdown-btn') // Select the button
+  .addEventListener('click', (event) => { // Add a click event listener
+    // Toggle the 'active' class on the parent element of the button
+    // This will show or hide the dropdown content when the button is clicked
     event.currentTarget.parentElement.classList.toggle('active');
   });
 
+// Add an event listener to the button that toggles the line chart dropdown
 document
-  .querySelector('.line-chart-dropdown-btn')
-  .addEventListener('click', () => {
+  .querySelector('.line-chart-dropdown-btn') // Select the button
+  .addEventListener('click', () => { // Add a click event listener
+    // Toggle the 'show' class on the dropdown content
+    // This will show or hide the dropdown content when the button is clicked
     document.getElementById('lc-dropdown-content').classList.toggle('show');
   });
