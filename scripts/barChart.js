@@ -6,44 +6,71 @@ import {
 } from './helper.js';
 
 export default class BarChart {
+  /**
+   * Constructor for the BarChart class.
+   * Initializes the BarChart with the provided SVG selector.
+   *
+   * @param {string} svgSelector - The selector for the SVG element to use for the bar chart.
+   */
   constructor(svgSelector) {
+    // Set the svgSelector property with the provided SVG selector
     this.svgSelector = svgSelector;
   }
 
-  // Filters data by car manufacturer ("Make") to display its associated models
+
+  /**
+   * Filters the provided data by car manufacturer ("Make") and counts the number of each model.
+   *
+   * @param {Array<Object>} data - The data to filter. Each object should have a "Make" and "Model" property.
+   * @param {string} make - The car manufacturer to filter the data by. Only data where the "Make" includes this string will be included.
+   * @returns {Array<Object>} The filtered and counted data. Each object has a "model" and "count" property.
+   */
   filterCarModel(data, make) {
+    // Filter the data to include only entries where the "Make" includes the provided string
     const filteredData = data.filter((d) =>
       d.Make.toLowerCase().includes(make.toLowerCase())
     );
 
+    // Create a set to store the unique models
     const modelSet = new Set();
+    // For each entry in the filtered data, add the "Model" to the set
     filteredData.forEach((d) => modelSet.add(d.Model));
 
+    // Map the unique models to an array of objects, each with a "model" and "count" property
     const modelCounts = Array.from(modelSet).map((model) => ({
       model,
+      // The "count" is the number of entries in the filtered data where the "Model" is the current model
       count: filteredData.filter((d) => d.Model === model).length,
     }));
 
+    // Return the array of model counts
     return modelCounts;
   }
 
-  // Initializes the SVG based on the specified dimensions
+
+  /**
+   * Initializes the SVG for the bar chart based on the specified dimensions.
+   * The width of the SVG is dynamic to fit the size of the container, and the height is fixed.
+   * The SVG is reset on each re-render.
+   *
+   * @returns {Object} An object containing the SVG, the bar chart group, the width and height of the bar chart, and the margins.
+   */
   createBarChart() {
-    // Dynamic width to fit the size of the container
+    // Select the container for the bar chart and get its width
     const container = d3.select('#bar-chart-container');
     const containerWidth = container.node().getBoundingClientRect().width;
 
-    // Dimensions
+    // Define the dimensions for the SVG and the bar chart
     const width = containerWidth - 50;
     const height = 450;
     const margin = { top: 10, right: 10, bottom: 30, left: 75 };
     const barChartWidth = width - margin.left - margin.right;
     const barChartHeight = height - margin.top - margin.bottom;
 
-    // Resetting the chart on each re-render
+    // Reset the SVG by removing all its child elements
     d3.select(this.svgSelector).selectAll('*').remove();
 
-    // Applying the default dimensions to the SVG container with dynamic width and fixed height
+    // Select the SVG and set its dimensions and style
     const svg = d3
       .select(this.svgSelector)
       .attr('viewBox', `0 0 ${width} ${height + 50}`)
@@ -51,26 +78,35 @@ export default class BarChart {
       .attr('width', '100%')
       .style('display', 'block');
 
-    // Initializing the margins and styling
+    // Append a group to the SVG for the bar chart, set its fill color, and translate it by the left and top margins
     const barChart = svg
       .append('g')
       .attr('fill', '#5E3FBE')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
+    // Return an object with the SVG, the bar chart group, the width and height of the bar chart, and the margins
     return { svg, barChart, barChartWidth, barChartHeight, margin };
   }
 
-  // Renders the bar chart to display the car "Make" or "Model" counts based on the user search
+
+  /**
+   * Renders a bar chart to display the counts of car "Make" or "Model" based on user search.
+   *
+   * @param {Array<Object>} data - The data to render. Each object should have a "Make" or "Model" and "count" property.
+   * @param {boolean} isDisplayingModels - A flag to indicate whether to display models or makes. Default is false (display makes).
+   */
   renderBarChart(data, isDisplayingModels = false) {
+    // Create the bar chart and get its dimensions and elements
     const { svg, barChart, barChartWidth, barChartHeight, margin } =
       this.createBarChart();
 
     let counts = [];
 
+    // If displaying models, use the provided data directly
     if (isDisplayingModels) {
       counts = data;
     } else {
-      // Fetching all the car makes and setting them as checked by default
+      // If displaying makes, filter and count the data by make
       const checkedMakes = getCheckedCarMakes(data, 'bc-dropdown-content');
 
       const filteredData = data.filter((d) => checkedMakes.includes(d.Make));
@@ -88,10 +124,10 @@ export default class BarChart {
       }));
     }
 
-    // Interchanging between the "Make" and "Model" columns to be used on the same chart
+    // Determine the data column to use based on whether displaying models or makes
     const colData = isDisplayingModels ? 'model' : 'make';
 
-    // Setting up x-axis and its scale
+    // Set up the x-axis and its scale
     const xScale = d3
       .scaleBand()
       .domain(counts.map((d) => d[colData]))
