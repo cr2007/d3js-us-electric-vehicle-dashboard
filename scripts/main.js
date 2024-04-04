@@ -40,21 +40,51 @@ const loadData = async () => {
     throw error;
   }
 };
+
 async function loadDataAndRenderMap(coordinatesData) {
+
   console.log("Loading map data ")
-    let topojsonData = await d3.json('data/countries-50m.topo.json');
-    let countries = topojson.feature(topojsonData, topojsonData.objects.countries);
+  let topojsonData = await d3.json('data/countries-50m.topo.json');
+  let countries = topojson.feature(topojsonData, topojsonData.objects.countries);
 
-    let map = new Map('#map-chart', 1000, 600);
+  // let map = new Map('#map-chart', 1000, 600);
 
-    let points = coordinatesData.map(d => [
-        +d.Longitude,
-        +d.Latitude,
-    ]);
+  let points = coordinatesData.map(d => [
+      +d.Longitude,
+      +d.Latitude,
+  ]);
 
-    map.baseMap(countries, d3.geoCylindricalStereographic)
-        .renderPoints(points);
+  map.baseMap(countries, d3.geoCylindricalStereographic);
+  map.renderPoints(points);
 }
+
+/**
+ * Filters the provided data based on a search term.
+ *
+ * @param {Array<Object>} data - The dataset to filter. Each object in the array represents an item with at least a "Make", "Longitude", and "Latitude" property.
+ * @param {string} searchTerm - The term to filter the data by. The function filters items where the "Make" property includes the search term.
+ * @returns {Array<Object>} - The filtered dataset, containing only items that match the search criteria.
+ */
+function filterDataBasedOnSearch(data, searchTerm) {
+  // If the search term is empty, return the original dataset
+  if (!searchTerm || searchTerm.trim() === '') {
+      return data;
+  }
+
+  // Convert the search term to lower case for case-insensitive comparison
+  const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+  // Filter the data based on whether the "Make" property includes the search term
+  const filteredData = data.filter(item => {
+      // Assume the searchable attribute is "Make". Adjust this if your data structure is different.
+      // Also, ensure the "Make" property exists and is a string before calling .toLowerCase()
+      return item.Make && item.Make.toLowerCase().includes(lowerCaseSearchTerm);
+  });
+
+  return filteredData;
+}
+
+
 // Charts
 const barChart = new BarChart('#bar-chart');
 const pieChart = new PieChart('#pie-chart');
@@ -62,6 +92,7 @@ const stackedBarChart = new StackedBarChart('#stacked-bar-chart');
 const lineChart = new LineChart('#line-chart');
 const groupedChart = new GroupedChart('#grouped-chart');
 const scatterPlot = new ScatterPlot('#scatter-plot');
+const map = new Map('#map-chart', 1000, 600);
 
 // Search functionality
 const handleSearch = (event) => {
@@ -72,16 +103,18 @@ const handleSearch = (event) => {
     loadData().then((data) => {
       // If search input is empty, render bar chart with the car makes only
       if (searchInput === '' || searchInput.length === 0) {
+
         barChart.renderBarChart(data, false);
         pieChart.renderPieChart(data);
-        stackedBarChart.renderStackedBarChart(
-          processDataForStackedBarChart(data)
-        );
+        stackedBarChart.renderStackedBarChart(processDataForStackedBarChart(data));
         lineChart.renderLineChart(processDataForLineChart(data));
         groupedChart.renderGroupedBarChart(processDataForgroupedBarChart(data));
         scatterPlot.render(processScatterData(data));
-        loadDataAndRenderMap(data);
-        // Otherwise, filter the data based on the search input
+
+
+        const filteredData = filterDataBasedOnSearch(data, searchInput);
+        const processedMapData = processDataForMap(filteredData, searchInput);
+        loadDataAndRenderMap(processedMapData);
       } else {
         const modelCounts = barChart.filterCarModel(data, searchInput);
 
@@ -185,6 +218,30 @@ const processScatterData = (data, searchTerm) => {
   // Return the structured data
   return structuredData;
 };
+
+const processDataForMap = (data, searchTerm) => {
+  const filteredData = searchTerm
+    ? data.filter(d => d.Make.toLowerCase().includes(searchTerm.toLowerCase()))
+    : data;
+
+  const groupedData = d3.rollups(
+    filteredData,
+    (v) => v.length,
+    (d) => `${d.Latitude},${d.Longitude}`
+  ).map(([location, count]) => {
+    const [latitude, longitude] = location.split(',').map(Number);
+    return {
+      latitude,
+      longitude,
+      count
+    };
+  });
+
+  console.log('Map data:', groupedData);
+
+  return groupedData;
+};
+
 
 /**
  * Processes the provided data to structure it for a grouped bar chart.
@@ -291,6 +348,8 @@ loadData().then((data) => {
   const processedLineData = processDataForLineChart(data);
   const processedGroupedData = processDataForgroupedBarChart(data);
   const processedScatterData = processScatterData(data);
+  const processedMapData = processDataForMap(data);
+        loadDataAndRenderMap(processedMapData);
 
   barChart.renderBarChart(data);
   pieChart.renderPieChart(data);

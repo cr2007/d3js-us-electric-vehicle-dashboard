@@ -15,6 +15,8 @@ export default class Map{
         this.width = width;
         this.height = height;
 
+        d3.select(this.svgSelector).selectAll('*').remove();
+
         // setting up selections
         this.svg = d3.select(container).append('svg')
             .classed('vis map', true)
