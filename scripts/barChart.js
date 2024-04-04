@@ -56,8 +56,8 @@ export default class BarChart {
 
     // Dimensions
     const width = containerWidth - 50;
-    const height = 500;
-    const margin = { top: 10, right: 10, bottom: 30, left: 45 };
+    const height = 450;
+    const margin = { top: 10, right: 10, bottom: 30, left: 75 };
     const barChartWidth = width - margin.left - margin.right;
     const barChartHeight = height - margin.top - margin.bottom;
 
@@ -67,7 +67,7 @@ export default class BarChart {
     // Applying the default dimensions and zoom to the SVG
     const svg = d3
       .select(this.svgSelector)
-      .attr('viewBox', `0 0 ${containerWidth} ${height}`)
+      .attr('viewBox', `0 0 ${containerWidth} ${height + 50}`)
       .attr('preserveAspectRatio', 'xMinYMin meet')
       .attr('width', '100%')
       .style('display', 'block')
@@ -104,7 +104,16 @@ export default class BarChart {
       .selectAll('text')
       .attr('dy', '1em')
       .attr('font-weight', '500')
-      .text((d) => (d.length > 6 ? d.substring(0, 4) + '...' : d));
+      .style('font-size', '10px')
+      .text((d) => (d.length > 6 ? d.substring(0, 5) + '...' : d));
+
+    xAxisGroup
+      .append('text')
+      .attr('class', 'axis-label')
+      .attr('x', barChartWidth / 2)
+      .attr('y', 55)
+      .style('font-size', '14px')
+      .text('Car Makes');
 
     const yScale = d3
       .scaleLinear()
@@ -119,6 +128,17 @@ export default class BarChart {
       .call(d3.axisLeft(yScale));
 
     yAxisGrp.select('.domain').attr('display', 'none');
+
+    yAxisGrp
+      .append('text')
+      .attr('class', 'axis-label')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', -70)
+      .attr('x', -(barChartHeight / 2))
+      .attr('dy', '1em')
+      .style('text-anchor', 'middle')
+      .style('font-size', '14px')
+      .text('# of sold cars');
 
     const tooltip = d3
       .select('body')
@@ -183,7 +203,7 @@ export default class BarChart {
 
             svg
               .selectAll('.x-axis text')
-              .text((d) => (d.length > 6 ? d.substring(0, 4) + '...' : d));
+              .text((d) => (d.length > 6 ? d.substring(0, 5) + '...' : d));
           })
       );
     }
