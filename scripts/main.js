@@ -48,14 +48,21 @@ const lineChart = new LineChart('#line-chart');
 const groupedChart = new GroupedChart('#grouped-chart');
 const scatterPlot = new ScatterPlot('#scatter-plot');
 
-// Search functionality
+/**
+ * Handles the search functionality.
+ * When the "Enter" key is pressed, the function loads the data, filters it based on the search input, and renders the charts.
+ *
+ * @param {KeyboardEvent} event - The event object. The function checks the keyCode property to determine if the "Enter" key was pressed.
+ */
 const handleSearch = (event) => {
-  // Search via "Enter"
+  // Check if the "Enter" key was pressed
   if (event.keyCode === 13) {
+    // Get the value of the search input and trim any leading or trailing whitespace
     const searchInput = document.querySelector('.search input').value.trim();
 
+    // Load the data
     loadData().then((data) => {
-      // If search input is empty, render bar chart with the car makes only
+      // If the search input is empty, render the charts with the unfiltered data
       if (searchInput === '' || searchInput.length === 0) {
         barChart.renderBarChart(data, false);
         pieChart.renderPieChart(data);
@@ -66,10 +73,12 @@ const handleSearch = (event) => {
         groupedChart.renderGroupedBarChart(processDataForgroupedBarChart(data));
         scatterPlot.render(processScatterData(data));
 
-        // Otherwise, filter the data based on the search input
+      // If the search input is not empty, filter the data based on the search input and render the charts with the filtered data
       } else {
+        // Filter the data based on the search input
         const modelCounts = barChart.filterCarModel(data, searchInput);
 
+        // Render the charts with the filtered data
         barChart.renderBarChart(modelCounts, true);
         pieChart.renderPieChart(data, searchInput);
         lineChart.renderLineChart(processDataForLineChart(data), searchInput);
