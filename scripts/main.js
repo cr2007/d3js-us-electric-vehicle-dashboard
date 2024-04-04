@@ -63,7 +63,7 @@ const handleSearch = (event) => {
           processDataForStackedBarChart(data)
         );
         lineChart.renderLineChart(processDataForLineChart(data));
-        groupedChart.renderGroupedBarChart(processDataForgrouprdBarChart(data));
+        groupedChart.renderGroupedBarChart(processDataForgroupedBarChart(data));
         scatterPlot.render(processScatterData(data));
 
         // Otherwise, filter the data based on the search input
@@ -77,7 +77,7 @@ const handleSearch = (event) => {
           processDataForStackedBarChart(data, searchInput)
         );
         groupedChart.renderGroupedBarChart(
-          processDataForgrouprdBarChart(data, searchInput)
+          processDataForgroupedBarChart(data, searchInput)
         );
         scatterPlot.render(processScatterData(data, searchInput));
       }
@@ -170,7 +170,7 @@ const processScatterData = (data, searchTerm) => {
   return structuredData;
 };
 
-const processDataForgrouprdBarChart = (data, searchTerm) => {
+const processDataForgroupedBarChart = (data, searchTerm) => {
   const filteredData = searchTerm
     ? data.filter((d) =>
         d.Make.toLowerCase().includes(searchTerm.toLowerCase())
@@ -236,7 +236,7 @@ document
 loadData().then((data) => {
   const processedStackedData = processDataForStackedBarChart(data);
   const processedLineData = processDataForLineChart(data);
-  const processedGroupedData = processDataForgrouprdBarChart(data);
+  const processedGroupedData = processDataForgroupedBarChart(data);
   const processedScatterData = processScatterData(data);
 
   barChart.renderBarChart(data);
