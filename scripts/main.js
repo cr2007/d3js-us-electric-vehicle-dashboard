@@ -288,33 +288,52 @@ document
   .querySelector('.search input')
   .addEventListener('keydown', handleSearch);
 
-// Loading the defaulted data
+
+/**
+ * Loads the data and processes it for various charts. Then, renders the charts and populates the dropdown content.
+ *
+ * @returns {Promise} A promise that resolves when the data is loaded and the charts are rendered.
+ */
 loadData().then((data) => {
+  // Process the data for the stacked bar chart
   const processedStackedData = processDataForStackedBarChart(data);
+  // Process the data for the line chart
   const processedLineData = processDataForLineChart(data);
+  // Process the data for the grouped bar chart
   const processedGroupedData = processDataForgroupedBarChart(data);
+  // Process the data for the scatter plot
   const processedScatterData = processScatterData(data);
 
+  // Render the bar chart with the original data
   barChart.renderBarChart(data);
+  // Render the pie chart with the original data
   pieChart.renderPieChart(data);
+  // Render the stacked bar chart with the processed data
   stackedBarChart.renderStackedBarChart(processedStackedData);
+  // Render the grouped bar chart with the processed data
   groupedChart.renderGroupedBarChart(processedGroupedData);
+  // Render the scatter plot with the processed data
   scatterPlot.render(processedScatterData);
+  // Render the line chart with the processed data
   lineChart.renderLineChart(processedLineData);
 
+  // Populate the dropdown content for the line chart
   populateDropdownContent({
     data,
     columnName: 'Make',
     dropdownId: 'lc-dropdown-content',
     dropdownContent: 'line-chart-dropdown-content',
+    // Update the line chart when the dropdown selection changes
     onChange: () => lineChart.updateChart(data),
   });
 
+  // Populate the dropdown content for the bar chart
   populateDropdownContent({
     data,
     columnName: 'Make',
     dropdownId: 'bc-dropdown-content',
     dropdownContent: 'bar-chart-dropdown-content',
+    // Render the bar chart when the dropdown selection changes
     onChange: () => barChart.renderBarChart(data, false),
   });
 });
