@@ -1,13 +1,10 @@
 <!-- omit from toc -->
-
 # F20DV Group Project
 
 <!-- omit from toc -->
-
 ## Course: Data Visualisation and Analytics ([F20DV](https://curriculum.hw.ac.uk/coursedetails/F20DV?termcode=202324))
 
 <!-- omit from toc -->
-
 ## Interactive Visualization Dashboard
 
 <div align="center">
@@ -26,7 +23,6 @@
 ---
 
 <!-- omit from toc -->
-
 ### Group 10
 
 Team Members:
@@ -39,22 +35,16 @@ Team Members:
 ---
 
 <!-- omit from toc -->
-
 ## Index
 
-- [F20DV Group Project](#f20dv-group-project)
-  - [Course: Data Visualisation and Analytics (F20DV)](#course-data-visualisation-and-analytics-f20dv)
-  - [Interactive Visualization Dashboard](#interactive-visualization-dashboard)
-    - [Group 10](#group-10)
-  - [Index](#index)
-  - [Introduction](#introduction)
-  - [Architecture](#architecture)
-    - [Directory Structure](#directory-structure)
-    - [Data Processing](#data-processing)
-    - [Event Handling](#event-handling)
-    - [Charts](#charts)
-    - [Styling](#styling)
-    - [HTML Structure](#html-structure)
+- [Introduction](#introduction)
+- [Architecture](#architecture)
+  - [Directory Structure](#directory-structure)
+  - [Data Processing](#data-processing)
+  - [Event Handling](#event-handling)
+  - [Charts](#charts)
+  - [Styling](#styling)
+  - [HTML Structure](#html-structure)
 
 ---
 
@@ -124,3 +114,5 @@ The application is styled using CSS. The [main CSS file](./styles/main.css) incl
 The [main HTML file](./index.html) includes the D3.js library, the main CSS file, and placeholders for the charts.
 
 The placeholders are `div` elements with specific IDs corresponding to each type of chart.
+
+---
