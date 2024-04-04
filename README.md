@@ -1,10 +1,13 @@
 <!-- omit from toc -->
+
 # F20DV Group Project
 
 <!-- omit from toc -->
+
 ## Course: Data Visualisation and Analytics ([F20DV](https://curriculum.hw.ac.uk/coursedetails/F20DV?termcode=202324))
 
 <!-- omit from toc -->
+
 ## Interactive Visualization Dashboard
 
 <div align="center">
@@ -23,9 +26,11 @@
 ---
 
 <!-- omit from toc -->
+
 ### Group 10
 
 Team Members:
+
 - Abdul Rehman - @ar225
 - Ahmed ElZubair - @ae87
 - Chandrashekhar Ramaprasad - @cr2007
@@ -34,16 +39,22 @@ Team Members:
 ---
 
 <!-- omit from toc -->
+
 ## Index
 
-- [Introduction](#introduction)
-- [Architecture](#architecture)
-  - [Directory Structure](#directory-structure)
-  - [Data Processing](#data-processing)
-  - [Event Handling](#event-handling)
-  - [Charts](#charts)
-  - [Styling](#styling)
-  - [HTML Structure](#html-structure)
+- [F20DV Group Project](#f20dv-group-project)
+  - [Course: Data Visualisation and Analytics (F20DV)](#course-data-visualisation-and-analytics-f20dv)
+  - [Interactive Visualization Dashboard](#interactive-visualization-dashboard)
+    - [Group 10](#group-10)
+  - [Index](#index)
+  - [Introduction](#introduction)
+  - [Architecture](#architecture)
+    - [Directory Structure](#directory-structure)
+    - [Data Processing](#data-processing)
+    - [Event Handling](#event-handling)
+    - [Charts](#charts)
+    - [Styling](#styling)
+    - [HTML Structure](#html-structure)
 
 ---
 
@@ -71,9 +82,13 @@ The project is structured as follows:
 - [`lib/`](./lib/): Contains the D3.js library file [`d3.v7.min.js`](./lib/d3/d3.v7.min.js)
 - [`scripts/`](scripts/): Constains JavaScript file s for each type of chart, connected by the main script file:
   - [`main.js`](./scripts/main.js): Handles data loading, processing, and event handling
-  - [`barChart.js`](./scripts/barChart.js): Implements the Bar Chart
-  - [`pieChart.js`](./scripts/pieChart.js): Implements the Pie Chart
-  - [`stackedBarChart.js`](./scripts/stackedBarChart.js): Implements the Stacked Bar Chart
+  - [`barChart.js`](./scripts/barChart.js): Implementation of the Bar Chart
+  - [`pieChart.js`](./scripts/pieChart.js): Implementation of the Pie Chart
+  - [`stackedBarChart.js`](./scripts/stackedBarChart.js): Implementation the Stacked Bar Chart
+  - [`lineChart.js`](./scripts/lineChart.js): Implementation of the Line Chart
+  - [`scatterPlot.js`](./scripts/scatterPlot.js): Implementation of the Scatter Plot
+  - [`groupedChart.js`](./scripts/groupedChart.js): Implementation of the Grouped Bar Chart
+  - [`helper.js`](./scripts/helper.js): Reusable functions that have been used throughout the development of the charts
 - [`styles/`](./styles/): Contains CSS files for each type of chart and the [main CSS file](./styles/main.css):
   - [`main.css`](./styles/main.css): Contains the main style and imports other CSS files
 - [`index.html`](./index.html): The main HTML file that includes the D3.js library, the main CSS file and placeholders for the charts
