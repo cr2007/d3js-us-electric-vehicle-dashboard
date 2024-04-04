@@ -16,8 +16,8 @@
 .legend-item-line {
   display: flex;
   align-items: center;
-  margin-left: 10px;
-  width: 110px;
+  margin-left: 40px;
+  width: 85px;
 }
 
 .legend-dot-line {
@@ -27,7 +27,8 @@
 }
 
 .legend-text-line {
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 500;
   margin-right: 10px;
   white-space: nowrap;
   overflow: hidden;

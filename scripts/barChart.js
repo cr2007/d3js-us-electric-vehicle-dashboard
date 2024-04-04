@@ -2,6 +2,7 @@ import {
   mouseoverHandler,
   mouseoutHandler,
   getCheckedCarMakes,
+  axisLabel,
 } from './helper.js';
 
 export default class BarChart {
@@ -118,13 +119,14 @@ export default class BarChart {
       .text((d) => (d.length > 6 ? d.substring(0, 5) + '...' : d));
 
     // Adding the X label
-    xAxisGroup
-      .append('text')
-      .attr('class', 'axis-label')
-      .attr('x', barChartWidth / 2)
-      .attr('y', 55)
-      .style('font-size', '14px')
-      .text('Car Makes');
+    axisLabel({
+      axisGroup: xAxisGroup,
+      orientation: 'x',
+      width: barChartWidth,
+      y: 45,
+      text: 'Car Manufacturers',
+      fontSize: '14px',
+    });
 
     // Setting up y-axis and its scale
     const yScale = d3
@@ -143,16 +145,14 @@ export default class BarChart {
     yAxisGrp.select('.domain').attr('display', 'none');
 
     // Adding the Y label
-    yAxisGrp
-      .append('text')
-      .attr('class', 'axis-label')
-      .attr('transform', 'rotate(-90)')
-      .attr('y', -70)
-      .attr('x', -(barChartHeight / 2))
-      .attr('dy', '1em')
-      .style('text-anchor', 'middle')
-      .style('font-size', '14px')
-      .text('# of sold cars');
+    axisLabel({
+      axisGroup: yAxisGrp,
+      orientation: 'y',
+      height: barChartHeight,
+      y: -70,
+      text: 'Number of Cars Sold',
+      fontSize: '14px',
+    });
 
     // Styling the tooltip on hover
     const tooltip = d3

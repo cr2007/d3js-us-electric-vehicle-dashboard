@@ -3,7 +3,7 @@
 import BarChart from './barChart.js';
 import PieChart from './pieChart.js';
 import StackedBarChart from './stackedBarChart.js';
-import LineChart from './LineChart.js';
+import LineChart from './lineChart.js';
 import GroupedChart from './groupedChart.js';
 import ScatterPlot from './scatterPlot.js';
 

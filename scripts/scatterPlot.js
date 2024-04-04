@@ -105,9 +105,4 @@ export default class ScatterPlot {
         (exit) => exit.remove()
       );
   }
-
-  //   setLabels(labelX, labelY) {
-  //     this.labelX.text(labelX);
-  //     this.labelY.text(labelY);
-  //   }
 }
