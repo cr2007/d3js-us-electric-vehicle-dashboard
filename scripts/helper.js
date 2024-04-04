@@ -1,4 +1,15 @@
-// Flexible implementation of axis labels to be easily modified on all charts
+/**
+ * Appends an axis label to a given axis group.
+ *
+ * @param {Object} options - The options for the axis label.
+ * @param {Object} options.axisGroup - The axis group to append the label to.
+ * @param {string} options.orientation - The orientation of the axis ("x" or "y").
+ * @param {number} options.height - The height of the axis group.
+ * @param {number} options.width - The width of the axis group.
+ * @param {number} options.y - The y-coordinate for the label.
+ * @param {string} options.text - The text for the label.
+ * @param {string} [options.fontSize='16px'] - The font size for the label.
+ */
 export const axisLabel = ({
   axisGroup,
   orientation,
@@ -8,6 +19,7 @@ export const axisLabel = ({
   text,
   fontSize = '16px',
 }) => {
+  // Append a text element to the axis group for the label
   const label = axisGroup
     .append('text')
     .attr('class', 'axis-label')
@@ -15,6 +27,7 @@ export const axisLabel = ({
     .style('font-weight', '500')
     .text(text);
 
+  // If the orientation is 'y', rotate the label and position it in the middle of the height
   if (orientation === 'y') {
     label
       .attr('transform', 'rotate(-90)')
@@ -23,6 +36,7 @@ export const axisLabel = ({
       .attr('dy', '1em')
       .style('text-anchor', 'middle');
   } else {
+    // If the orientation is not 'y', position the label in the middle of the width
     label
       .attr('x', width / 2)
       .attr('y', y)
