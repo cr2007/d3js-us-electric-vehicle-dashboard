@@ -11,18 +11,31 @@ import { populateDropdownContent } from './helper.js';
 
 console.log(`D3 loaded, version ${d3.version}`);
 
-// Loading data
+/**
+ * Asynchronously loads data from a CSV file using D3's csv function.
+ * Logs the loaded data to the console.
+ *
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of objects representing the loaded data.
+ * Each object corresponds to a row in the CSV file, and its properties correspond to the columns.
+ * @throws {Error} If there is an error loading the data, the function will log the error to the console and re-throw it.
+ */
 const loadData = async () => {
   try {
+    // Use D3's csv function to load the data from the CSV file
+    // This function returns a promise that resolves to an array of objects
     let data = await d3.csv(
       'data/Electric_Vehicle_Population_Data_Cleaned.csv'
     );
 
+    // Log the loaded data to the console
     console.log('Data loaded:', data);
 
-    return data;
+    return data; // Return the loaded data
   } catch (error) {
+    // If there is an error loading the data, log the error to the console
     console.error('Error loading data:', error);
+
+    // Re-throw the error so it can be caught and handled by the caller
     throw error;
   }
 };
@@ -50,7 +63,7 @@ const handleSearch = (event) => {
           processDataForStackedBarChart(data)
         );
         lineChart.renderLineChart(processDataForLineChart(data));
-        groupedChart.renderGroupedBarChart(processDataForgrouprdBarChart(data));
+        groupedChart.renderGroupedBarChart(processDataForgroupedBarChart(data));
         scatterPlot.render(processScatterData(data));
 
         // Otherwise, filter the data based on the search input
@@ -64,7 +77,7 @@ const handleSearch = (event) => {
           processDataForStackedBarChart(data, searchInput)
         );
         groupedChart.renderGroupedBarChart(
-          processDataForgrouprdBarChart(data, searchInput)
+          processDataForgroupedBarChart(data, searchInput)
         );
         scatterPlot.render(processScatterData(data, searchInput));
       }
@@ -109,59 +122,73 @@ const processDataForStackedBarChart = (data, searchTerm) => {
 };
 
 /**
- * Processes the input data to structure it for a scatter plot.
- * The function calculates the sum of the "Electric Range" for each unique "Model Year".
+ * Processes the provided data to structure it for a scatter plot.
+ * Filters the data based on a search term, extracts unique years and electric ranges,
+ * and calculates the average electric range for each year.
  *
- * @param {Array} data - The input data, an array of objects where each object represents a car model.
- * @return {Array} An array of arrays where each sub-array contains a "Model Year" and the corresponding total "Electric Range".
+ * @param {Array<Object>} data - The data to process. Each object should have a "Make", "Model Year", and "Electric Range" property.
+ * @param {string} searchTerm - The term to filter the data by. Only objects where the "Make" includes the search term will be included.
+ * @returns {Array<Array<number>>} An array of arrays where each sub-array represents a data point in the format [year, averageElectricRange].
  */
 const processScatterData = (data, searchTerm) => {
+  // Filter the data based on the search term, if provided
   const filteredData = searchTerm
     ? data.filter((d) =>
         d.Make.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : data;
 
-  // Map through the data and extract the "Model Year" from each object
-  // Use Set to remove duplicates, then convert back to an array
-  // Sort the array in ascending order
+  // Extract the unique "Model Year" values from the filtered data and sort them in ascending order
   const years = Array.from(
     new Set(filteredData.map((d) => d['Model Year']))
   ).sort(d3.ascending);
 
-  // Map through the data and extract the "Electric Range" from each object
-  // Use Set to remove duplicates, then convert back to an array
-  // Sort the array in ascending order
+  // Extract the unique "Electric Range" values from the filtered data and sort them in ascending order
   const range = Array.from(
     new Set(filteredData.map((d) => d['Electric Range']))
   ).sort(d3.ascending);
 
-  // console.log('RANGE: ', range);
-
-  // Map through the unique years
-  // For each year, filter the data to get objects with that year
-  // Reduce the filtered data to get the sum of "Electric Range"
-  // Return an array with the year and the sum
+  // For each unique year, calculate the average "Electric Range" for that year
   const structuredData = years.map((year) => {
+    // Filter the data to get the objects for the current year
     const yearData = filteredData.filter((d) => d['Model Year'] === year);
+
+    // Calculate the sum of the "Electric Range" values for the current year
     const sum = yearData.reduce(
       (acc, curr) => acc + parseInt(curr['Electric Range']),
       0
     );
+
+    // Calculate the average "Electric Range" for the current year
     const average = sum / yearData.length;
+
+    // Return the year and the average as a data point
     return [year, average];
   });
 
+  // Return the structured data
   return structuredData;
 };
 
-const processDataForgrouprdBarChart = (data, searchTerm) => {
+/**
+ * Processes the provided data to structure it for a grouped bar chart.
+ *
+ * Filters the data based on a search term, groups the data by year and CAFV eligibility,
+ * and calculates the count of each group.
+ *
+ * @param {Array<Object>} data - The data to process. Each object should have a "Make", "Model Year", and "Clean Alternative Fuel Vehicle (CAFV) Eligibility" property.
+ * @param {string} searchTerm - The term to filter the data by. Only objects where the "Make" includes the search term will be included.
+ * @returns {Array<Object>} An array of objects where each object represents a year and contains an array of groups with their counts.
+ */
+const processDataForgroupedBarChart = (data, searchTerm) => {
+  // Filter the data based on the search term, if provided
   const filteredData = searchTerm
     ? data.filter((d) =>
         d.Make.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : data;
 
+  // Group the data by "Model Year" and "CAFV Eligibility", and calculate the count of each group
   const rolledUpData = d3.rollups(
     filteredData,
     (v) => v.length,
@@ -169,48 +196,73 @@ const processDataForgrouprdBarChart = (data, searchTerm) => {
     (d) => d['Clean Alternative Fuel Vehicle (CAFV) Eligibility']
   );
 
+  // Structure the grouped data into an array of objects where each object represents a year and contains an array of groups with their counts
   const structuredDataArray = rolledUpData.map(([year, types]) => {
     const groups = types.map(([type, count]) => ({
       grp: type,
       count,
     }));
 
+    // Calculate the total count for the current year
     const ttl = groups.reduce((sum, group) => sum + group.count, 0);
 
+    // Return an object representing the year, groups, and total count
     return { year, groups, ttl };
   });
 
-  // Sort by year in ascending order
+  // Sort the data by year in ascending order
   structuredDataArray.sort((a, b) => b.year - a.year);
 
+  // Adapt the structure of the data to match the expected input format of the grouped bar chart
   const adaptedStructure = structuredDataArray.map(({ year: yr, groups }) => ({
     yr,
     groups: groups.map(({ grp, count }) => ({ grp, count })),
   }));
 
+  // Log the processed data to the console
   console.log('THIS IS SPARTA:', adaptedStructure);
+
+  // Return the processed data
   return adaptedStructure;
 };
 
+
+/**
+ * Processes the provided data to structure it for a line chart.
+ * Extracts unique makes and years, and calculates the count of each make for each year.
+ *
+ * @param {Array<Object>} data - The data to process. Each object should have a "Make" and "Model Year" property.
+ * @returns {Array<Object>} An array of objects where each object represents a make and contains an array of values with the year and count.
+ */
 const processDataForLineChart = (data) => {
+  // Extract the unique "Make" values from the data
   const makes = Array.from(new Set(data.map((d) => d.Make)));
 
+  // Extract the unique "Model Year" values from the data and sort them in ascending order
   const years = Array.from(new Set(data.map((d) => d['Model Year']))).sort(
     d3.ascending
   );
 
+  // For each unique make, calculate the count of that make for each year
   const structuredData = makes.map((make) => {
     const values = years.map((year) => {
+      // Filter the data to get the objects for the current make and year
       const count = data.filter(
         (d) => d.Make === make && d['Model Year'] === year
       ).length;
+
+      // Return the year and the count as a value
       return { year, count };
     });
+
+    // Return the make and the values as a data point
     return { make, values };
   });
 
+  // Return the structured data
   return structuredData;
 };
+
 
 // Event listener to search input
 document
@@ -221,7 +273,7 @@ document
 loadData().then((data) => {
   const processedStackedData = processDataForStackedBarChart(data);
   const processedLineData = processDataForLineChart(data);
-  const processedGroupedData = processDataForgrouprdBarChart(data);
+  const processedGroupedData = processDataForgroupedBarChart(data);
   const processedScatterData = processScatterData(data);
 
   barChart.renderBarChart(data);
