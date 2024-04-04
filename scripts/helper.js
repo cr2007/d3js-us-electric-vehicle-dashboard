@@ -1,4 +1,36 @@
-// Mouse hover functions to be used for each chart
+// Flexible implementation of axis labels to be easily modified on all charts
+export const axisLabel = ({
+  axisGroup,
+  orientation,
+  height,
+  width,
+  y,
+  text,
+  fontSize = '16px',
+}) => {
+  const label = axisGroup
+    .append('text')
+    .attr('class', 'axis-label')
+    .style('font-size', fontSize)
+    .style('font-weight', '500')
+    .text(text);
+
+  if (orientation === 'y') {
+    label
+      .attr('transform', 'rotate(-90)')
+      .attr('y', y)
+      .attr('x', -(height / 2))
+      .attr('dy', '1em')
+      .style('text-anchor', 'middle');
+  } else {
+    label
+      .attr('x', width / 2)
+      .attr('y', y)
+      .style('text-anchor', 'middle');
+  }
+};
+
+// Tooltip hover handlers to be used on all charts
 export const mouseoverHandler =
   (tooltip, getContent, scale = 0.85) =>
   (event, d) => {
@@ -25,7 +57,7 @@ export const mouseoutHandler = (tooltip) => (event) => {
     .style('opacity', 1);
 };
 
-// Used to display the dropdown content
+// Used for displaying the dropdown content
 export const populateDropdownContent = ({
   data,
   columnName,
@@ -53,7 +85,7 @@ export const populateDropdownContent = ({
   });
 };
 
-// Used for applying all Car Makes as checked by default
+// Applying all Car Makes as checked by default
 export const getCheckedCarMakes = (data, dropdownId) => {
   let makes = d3
     .selectAll(`#${dropdownId} input[type='checkbox']:checked`)

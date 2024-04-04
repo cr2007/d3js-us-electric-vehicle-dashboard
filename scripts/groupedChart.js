@@ -1,4 +1,4 @@
-import { mouseoverHandler, mouseoutHandler } from './helper.js';
+import { mouseoverHandler, mouseoutHandler, axisLabel } from './helper.js';
 
 export default class GroupedBarChart {
   constructor(svgSelector) {
@@ -58,10 +58,28 @@ export default class GroupedBarChart {
 
     xAxisGroup.select('.domain').attr('display', 'none');
 
+    // Adding the X label
+    axisLabel({
+      axisGroup: xAxisGroup,
+      orientation: 'x',
+      width,
+      y: 40,
+      text: 'Number of Clean Fuel Used',
+    });
+
     // Y Axis
     const yAxis = d3.axisLeft(yScale);
     const yAxisGroup = svg.append('g').attr('class', 'grid').call(yAxis);
     yAxisGroup.select('.domain').attr('display', 'none');
+
+    // Adding the Y label
+    axisLabel({
+      axisGroup: yAxisGroup,
+      orientation: 'y',
+      height: height,
+      y: -70,
+      text: 'Years',
+    });
 
     // Grouping the bars together
     svg

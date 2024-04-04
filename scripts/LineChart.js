@@ -1,4 +1,4 @@
-import { getCheckedCarMakes } from './helper.js';
+import { getCheckedCarMakes, axisLabel } from './helper.js';
 
 export default class LineChart {
   constructor(svgSelector) {
@@ -40,7 +40,7 @@ export default class LineChart {
   }
 
   renderLineChart(data, searchedMake) {
-    const margin = { top: 20, right: 30, bottom: 50, left: 60 };
+    const margin = { top: 20, right: 30, bottom: 50, left: 80 };
     const width = 900 - margin.left - margin.right;
     const height = 450 - margin.top - margin.bottom;
 
@@ -58,7 +58,11 @@ export default class LineChart {
       new Set(filteredData.flatMap((d) => d.values.map((v) => v.year)))
     ).sort();
 
-    const xScale = d3.scaleBand().range([0, width]).domain(allYears).padding(1);
+    const xScale = d3
+      .scaleBand()
+      .range([-50, width])
+      .domain(allYears)
+      .padding(1);
 
     const yScale = d3
       .scaleLinear()
@@ -181,7 +185,16 @@ export default class LineChart {
 
     xAxisGroup.select('.domain').attr('display', 'none');
 
-    const yAxisGrp = svg.append('g').call(d3.axisLeft(yScale));
+    // Adding the X label
+    axisLabel({
+      axisGroup: xAxisGroup,
+      orientation: 'x',
+      width,
+      y: 40,
+      text: 'Years',
+    });
+
+    const yAxisGroup = svg.append('g').call(d3.axisLeft(yScale));
 
     const tooltip = d3
       .select('body')
@@ -203,7 +216,16 @@ export default class LineChart {
       tooltip.transition().duration(500).style('opacity', 0);
     };
 
-    yAxisGrp.select('.domain').attr('display', 'none');
+    yAxisGroup.select('.domain').attr('display', 'none');
+
+    // Adding the Y label
+    axisLabel({
+      axisGroup: yAxisGroup,
+      orientation: 'y',
+      height: height,
+      y: -70,
+      text: 'Number of Electric Vehicles Owned',
+    });
 
     filteredData.forEach((makeData) => {
       svg

@@ -1,4 +1,4 @@
-import { mouseoverHandler, mouseoutHandler } from './helper.js';
+import { mouseoverHandler, mouseoutHandler, axisLabel } from './helper.js';
 
 export default class StackedBarChart {
   constructor(svgSelector) {
@@ -18,7 +18,7 @@ export default class StackedBarChart {
     const containerWidth = container.node().getBoundingClientRect().width;
 
     // Dimensions and margins
-    const margin = { top: 20, right: 20, bottom: 40, left: 50 };
+    const margin = { top: 20, right: 20, bottom: 40, left: 80 };
     const width = containerWidth - 5;
     const height = 580 - margin.top - margin.bottom;
 
@@ -88,8 +88,26 @@ export default class StackedBarChart {
 
     xAxisGroup.select('.domain').attr('display', 'none');
 
+    // Adding the X label
+    axisLabel({
+      axisGroup: xAxisGroup,
+      orientation: 'x',
+      width,
+      y: 40,
+      text: 'Years',
+    });
+
     const yAxisGroup = svg.append('g').call(yAxis);
     yAxisGroup.select('.domain').attr('display', 'none');
+
+    // Adding the Y label
+    axisLabel({
+      axisGroup: yAxisGroup,
+      orientation: 'y',
+      height: height,
+      y: -70,
+      text: 'Number of Electric Vehicle Types Sold',
+    });
 
     // Add a tooltip
     const tooltip = d3
