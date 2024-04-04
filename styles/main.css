@@ -88,20 +88,17 @@ h1 {
 
 .card-5 {
   grid-area: c5;
-  background-color: #783368;
   border-radius: 10px;
 }
 /* c6 */
 .card-6 {
   grid-area: c6;
-  background-color: #783368;
   border-radius: 10px;
 }
 
 /* c7 */
 .card-7 {
   grid-area: c7;
-  background-color: #783368;
   border-radius: 10px;
 }
 
@@ -117,4 +114,24 @@ h1 {
     background-color: #fafafa;
     color: #000000;
   }
+}
+
+svg.map path.regions{
+  fill: #eeeeee;
+  stroke: lightslategrey;
+  stroke-width: 1px;
+}
+
+svg.map circle.point{
+  fill-opacity: 0.7;
+  fill: #5e3fbe;
+}
+svg.vis{
+  border: 0.5px solid var(--main-color);
+}
+
+svg.vis text.legend{
+  font-size: 14px;
+  font-family: var(--font-text);
+  color: var(--main-color);
 }
