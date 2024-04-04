@@ -48,14 +48,24 @@ export const mouseoverHandler =
       .style('opacity', 0.5);
   };
 
+
+/**
+ * Creates a mouseout event handler for a tooltip.
+ *
+ * @param {Object} tooltip - The tooltip element.
+ * @returns {Function} The mouseout event handler.
+ */
 export const mouseoutHandler = (tooltip) => (event) => {
+  // Transition the tooltip to an opacity of 0 over 500 milliseconds
   tooltip.transition().duration(500).style('opacity', 0);
 
+  // Style the element that the mouse was over
   d3.select(event.target)
-    .style('stroke', 'none')
-    .style('stroke-width', '0')
-    .style('opacity', 1);
+    .style('stroke', 'none')    // Remove the stroke
+    .style('stroke-width', '0') // Set the stroke width to 0
+    .style('opacity', 1);       // Set the opacity to 1
 };
+
 
 /**
  * Populates the content of a dropdown with checkboxes for each unique value in a specified column of the data.
