@@ -42,22 +42,36 @@ const loadData = async () => {
   }
 };
 
-async function loadDataAndRenderMap(coordinatesData) {
 
+/**
+ * Loads the map data and renders the map with the provided coordinates data.
+ * The map data is loaded from a TopoJSON file. The coordinates data is used to render points on the map.
+ *
+ * @param {Array<Object>} coordinatesData - The data to use for the points. Each object should have a "Longitude" and "Latitude" property.
+ */
+async function loadDataAndRenderMap(coordinatesData) {
+  // Log a message to the console
   console.log("Loading map data ")
+
+  // Load the TopoJSON data from the file 'data/countries-50m.topo.json'
   let topojsonData = await d3.json('data/countries-50m.topo.json');
+
+  // Convert the TopoJSON data to GeoJSON features
   let countries = topojson.feature(topojsonData, topojsonData.objects.countries);
 
-  // let map = new Map('#map-chart', 1000, 600);
-
+  // Map the coordinates data to an array of arrays where each sub-array contains the longitude and latitude
   let points = coordinatesData.map(d => [
       +d.Longitude,
       +d.Latitude,
   ]);
 
+  // Render the base map with the countries data and the cylindrical stereographic projection
   map.baseMap(countries, d3.geoCylindricalStereographic);
+
+  // Render the points on the map with the points data
   map.renderPoints(points);
 }
+
 
 /**
  * Filters the provided data based on a search term.
@@ -94,6 +108,7 @@ const lineChart = new LineChart('#line-chart');
 const groupedChart = new GroupedChart('#grouped-chart');
 const scatterPlot = new ScatterPlot('#scatter-plot');
 const map = new Map('#map-chart', 1000, 600);
+
 
 /**
  * Handles the search functionality.
@@ -154,13 +169,23 @@ document
   .addEventListener('keydown', handleSearch); // Add a 'keydown' event listener that calls the `handleSearch` function
 
 
+/**
+ * Processes the data for a stacked bar chart.
+ * Filters the data based on the search term, rolls up the data by model year and electric vehicle type, structures the data, and sorts the data by year.
+ *
+ * @param {Array<Object>} data - The data to process. Each object should have a "Make", "Model Year", and "Electric Vehicle Type" property.
+ * @param {string} searchTerm - The term to filter the data by. If provided, only data where the "Make" includes the search term will be included.
+ * @returns {Array<Object>} The processed data. Each object has a "year", "Battery Electric Vehicle (BEV)", and "Plug-in Hybrid Electric Vehicle (PHEV)" property.
+ */
 const processDataForStackedBarChart = (data, searchTerm) => {
+  // Filter the data based on the search term
   const filteredData = searchTerm
     ? data.filter((d) =>
         d.Make.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : data;
 
+  // Roll up the data by model year and electric vehicle type
   const rolledUpData = d3.rollups(
     filteredData,
     (v) => v.length,
@@ -168,6 +193,7 @@ const processDataForStackedBarChart = (data, searchTerm) => {
     (d) => d['Electric Vehicle Type']
   );
 
+  // Structure the data
   const structuredData = rolledUpData.map(([year, types]) => {
     const entriesForYear = {
       year,
@@ -181,8 +207,10 @@ const processDataForStackedBarChart = (data, searchTerm) => {
     return entriesForYear;
   });
 
+  // Sort the data by year
   structuredData.sort((a, b) => d3.ascending(a.year, b.year));
 
+  // Return the processed data
   return structuredData;
 };
 
@@ -237,17 +265,32 @@ const processScatterData = (data, searchTerm) => {
 };
 
 
+/**
+ * Processes the data for a map visualization.
+ * Filters the data based on the search term, groups the data by latitude and longitude, structures the data, and logs the grouped data to the console.
+ *
+ * @param {Array<Object>} data - The data to process. Each object should have a "Make", "Latitude", and "Longitude" property.
+ * @param {string} searchTerm - The term to filter the data by. If provided, only data where the "Make" includes the search term will be included.
+ * @returns {Array<Object>} The processed data. Each object has a "latitude", "longitude", and "count" property.
+ */
 const processDataForMap = (data, searchTerm) => {
+  // Filter the data based on the search term
   const filteredData = searchTerm
     ? data.filter(d => d.Make.toLowerCase().includes(searchTerm.toLowerCase()))
     : data;
 
+  // Group the data by latitude and longitude
   const groupedData = d3.rollups(
     filteredData,
+    // For each group, count the number of entries
     (v) => v.length,
+    // Group by the latitude and longitude
     (d) => `${d.Latitude},${d.Longitude}`
+  // Map the grouped data to an array of objects
   ).map(([location, count]) => {
+    // Split the location into latitude and longitude and convert them to numbers
     const [latitude, longitude] = location.split(',').map(Number);
+    // Return an object with the latitude, longitude, and count
     return {
       latitude,
       longitude,
@@ -255,8 +298,10 @@ const processDataForMap = (data, searchTerm) => {
     };
   });
 
+  // Log the grouped data to the console
   console.log('Map data:', groupedData);
 
+  // Return the grouped data
   return groupedData;
 };
 

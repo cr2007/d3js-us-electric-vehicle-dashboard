@@ -1,19 +1,42 @@
 import { mouseoverHandler, mouseoutHandler, axisLabel } from './helper.js';
 
 export default class GroupedBarChart {
+  /**
+   * Constructor for the GroupedChart class.
+   * Initializes the GroupedChart with the provided SVG selector.
+   *
+   * @param {string} svgSelector - The selector for the SVG element to use for the grouped chart.
+   */
   constructor(svgSelector) {
+    // Set the svgSelector property with the provided SVG selector
     this.svgSelector = svgSelector;
   }
 
+  /**
+   * Renders a grouped bar chart based on the provided data.
+   *
+   * @param {Array<Object>} data - The data to render. Each object should have properties for each group and a "group" property.
+   */
   renderGroupedBarChart(data) {
+
+    /**
+     * Extracts the unique group names from the provided data.
+     *
+     * @param {Array<Object>} data - The data to extract the group names from. Each object should have a "groups" property, which is an array of objects. Each of these objects should have a "grp" property.
+     * @returns {Array<string>} An array of the unique group names.
+     */
     const keys = data.reduce((acc, d) => {
+      // For each group in the current data object
       d.groups.forEach((g) => {
+        // If the group name is not already in the accumulator array
         if (acc.indexOf(g.grp) === -1) {
-          acc.push(g.grp);
+          acc.push(g.grp); // Add the group name to the accumulator array
         }
       });
+
+      // Return the accumulator array
       return acc;
-    }, []);
+    }, []); // Start with an empty accumulator array
 
     // Dimensions and margins
     const margin = { top: 10, right: 20, bottom: 40, left: 80 };
