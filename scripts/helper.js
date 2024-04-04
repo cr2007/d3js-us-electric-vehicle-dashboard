@@ -85,16 +85,28 @@ export const populateDropdownContent = ({
   });
 };
 
-// Applying all Car Makes as checked by default
-export const getCheckedCarMakes = (data, dropdownId) => {
-  let makes = d3
-    .selectAll(`#${dropdownId} input[type='checkbox']:checked`)
-    .nodes()
-    .map((el) => el.value);
 
+/**
+ * Gets the car makes that are checked in a dropdown.
+ * 
+ * If no car makes are checked, it returns all car makes from the data.
+ *
+ * @param {Array} data - The data array, where each element is an object that includes a 'Make' property.
+ * @param {string} dropdownId - The ID of the dropdown.
+ * @returns {Array} The array of checked car makes.
+ */
+export const getCheckedCarMakes = (data, dropdownId) => {
+  // Select all checked checkboxes in the dropdown and get their values
+  let makes = d3
+    .selectAll(`#${dropdownId} input[type='checkbox']:checked`) // Select all checked checkboxes in the dropdown
+    .nodes() // Get the nodes of the selection
+    .map((el) => el.value); // Get the value of each node
+
+  // If no checkboxes are checked, get all car makes from the data
   if (makes.length === 0) {
-    makes = [...new Set(data.map((d) => d.Make))];
+    makes = [...new Set(data.map((d) => d.Make))]; // Get all unique car makes from the data
   }
 
+  // Return the array of car makes
   return makes;
 };
