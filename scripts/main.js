@@ -94,9 +94,13 @@ const handleSearch = (event) => {
   }
 };
 
+/**
+ * Adds a 'keydown' event listener to the search input field.
+ * When a key is pressed down in the search input field, the `handleSearch` function is called.
+ */
 document
-  .querySelector('.search input')
-  .addEventListener('keydown', handleSearch);
+  .querySelector('.search input') // Select the search input field
+  .addEventListener('keydown', handleSearch); // Add a 'keydown' event listener that calls the `handleSearch` function
 
 
 const processDataForStackedBarChart = (data, searchTerm) => {
@@ -338,14 +342,21 @@ loadData().then((data) => {
   });
 });
 
+
+// Add an event listener to the button that toggles the bar chart dropdown
 document
-  .querySelector('.bar-chart-dropdown-btn')
-  .addEventListener('click', (event) => {
+  .querySelector('.bar-chart-dropdown-btn') // Select the button
+  .addEventListener('click', (event) => { // Add a click event listener
+    // Toggle the 'active' class on the parent element of the button
+    // This will show or hide the dropdown content when the button is clicked
     event.currentTarget.parentElement.classList.toggle('active');
   });
 
+// Add an event listener to the button that toggles the line chart dropdown
 document
-  .querySelector('.line-chart-dropdown-btn')
-  .addEventListener('click', () => {
+  .querySelector('.line-chart-dropdown-btn') // Select the button
+  .addEventListener('click', () => { // Add a click event listener
+    // Toggle the 'show' class on the dropdown content
+    // This will show or hide the dropdown content when the button is clicked
     document.getElementById('lc-dropdown-content').classList.toggle('show');
   });
