@@ -226,25 +226,43 @@ const processDataForgroupedBarChart = (data, searchTerm) => {
   return adaptedStructure;
 };
 
+
+/**
+ * Processes the provided data to structure it for a line chart.
+ * Extracts unique makes and years, and calculates the count of each make for each year.
+ *
+ * @param {Array<Object>} data - The data to process. Each object should have a "Make" and "Model Year" property.
+ * @returns {Array<Object>} An array of objects where each object represents a make and contains an array of values with the year and count.
+ */
 const processDataForLineChart = (data) => {
+  // Extract the unique "Make" values from the data
   const makes = Array.from(new Set(data.map((d) => d.Make)));
 
+  // Extract the unique "Model Year" values from the data and sort them in ascending order
   const years = Array.from(new Set(data.map((d) => d['Model Year']))).sort(
     d3.ascending
   );
 
+  // For each unique make, calculate the count of that make for each year
   const structuredData = makes.map((make) => {
     const values = years.map((year) => {
+      // Filter the data to get the objects for the current make and year
       const count = data.filter(
         (d) => d.Make === make && d['Model Year'] === year
       ).length;
+
+      // Return the year and the count as a value
       return { year, count };
     });
+
+    // Return the make and the values as a data point
     return { make, values };
   });
 
+  // Return the structured data
   return structuredData;
 };
+
 
 // Event listener to search input
 document
