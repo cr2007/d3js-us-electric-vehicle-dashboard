@@ -31,17 +31,30 @@ export default class Map{
         this.#setZoom();
     }
 
-    // function to set the zoom behaviour
-    #setZoom(){
+
+    /**
+     * Sets the zoom behavior for the map.
+     * The zoom behavior includes the extent, translate extent, scale extent, and zoom event handler.
+     * The zoom event handler applies the zoom transform to the map and point groups.
+     */
+    #setZoom() {
+        // Initialize the zoom behavior with D3's zoom function
         this.zoom = d3.zoom()
+            // Set the extent of the zoom, which is the area that can be zoomed
             .extent([[0,0], [this.width,this.height]])
+            // Set the translate extent, which is the area that can be panned
             .translateExtent([[0,0], [this.width,this.height]])
+            // Set the scale extent, which is the range of scales that can be applied
             .scaleExtent([1,8])
+            // Set the zoom event handler
             .on('zoom', ({transform})=>{
-                // applies transform and call render map to update zoom scales
+                // Apply the zoom transform to the map group
                 this.mapGroup.attr('transform', transform);
+                // Apply the zoom transform to the point group
                 this.pointGroup.attr('transform', transform);
             })
+
+        // Call the zoom behavior on the SVG to enable zooming
         this.svg.call(this.zoom)
     }
 
