@@ -30,22 +30,34 @@ export const axisLabel = ({
   }
 };
 
-// Tooltip hover handlers to be used on all charts
+
+/**
+ * Creates a mouseover event handler for a tooltip.
+ *
+ * @param {Object} tooltip - The tooltip element.
+ * @param {Function} getContent - A function that returns the content for the tooltip.
+ * @param {number} [scale=0.85] - The scale factor for the tooltip's position.
+ * @returns {Function} The mouseover event handler.
+ */
 export const mouseoverHandler =
   (tooltip, getContent, scale = 0.85) =>
   (event, d) => {
+    // Transition the tooltip to an opacity of 0.9 over 200 milliseconds
     tooltip.transition().duration(200).style('opacity', 0.9);
+    // Get the content for the tooltip
     const content = getContent(d);
 
+    // Set the HTML of the tooltip to the content, and position the tooltip
     tooltip
-      .html(content)
-      .style('left', `${event.pageX / scale}px`)
-      .style('top', `${event.pageY / scale - 50}px`);
+      .html(content) // Set the HTML of the tooltip
+      .style('left', `${event.pageX / scale}px`)      // Position the tooltip horizontally
+      .style('top', `${event.pageY / scale - 50}px`); // Position the tooltip vertically
 
+    // Style the element that the mouse is over
     d3.select(event.currentTarget)
-      .style('stroke', 'black')
-      .style('stroke-width', '2')
-      .style('opacity', 0.5);
+      .style('stroke', 'black')   // Set the stroke color to black
+      .style('stroke-width', '2') // Set the stroke width to 2
+      .style('opacity', 0.5);     // Set the opacity to 0.5
   };
 
 
