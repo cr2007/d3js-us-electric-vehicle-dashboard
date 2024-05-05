@@ -33,9 +33,9 @@
 Team Members:
 
 - Abdul Rehman - @ar225
-- Ahmed ElZubair - @ae87
+- Ahmed ElZubair - @AhmedElZubair38
 - Chandrashekhar Ramaprasad - @cr2007
-- Tamir Forawi - @tf2008
+- Tamir Forawi - @tvmir
 
 ---
 
